@@ -49,16 +49,22 @@
             this.BtUpdate = new System.Windows.Forms.Button();
             this.BtAdd = new System.Windows.Forms.Button();
             this.TbFind = new System.Windows.Forms.TextBox();
+            this.NumericPriceMin = new System.Windows.Forms.NumericUpDown();
+            this.NumericPriceMax = new System.Windows.Forms.NumericUpDown();
+            this.TbId = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.NUDPriceSell)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUDPriceBuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dtg)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericPriceMin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericPriceMax)).BeginInit();
             this.SuspendLayout();
             // 
             // CbAllResult
             // 
             this.CbAllResult.AutoSize = true;
-            this.CbAllResult.Location = new System.Drawing.Point(997, 61);
+            this.CbAllResult.Location = new System.Drawing.Point(987, 83);
             this.CbAllResult.Name = "CbAllResult";
             this.CbAllResult.Size = new System.Drawing.Size(49, 24);
             this.CbAllResult.TabIndex = 97;
@@ -82,7 +88,7 @@
             // TbCurrentPage
             // 
             this.TbCurrentPage.Enabled = false;
-            this.TbCurrentPage.Location = new System.Drawing.Point(482, 622);
+            this.TbCurrentPage.Location = new System.Drawing.Point(482, 646);
             this.TbCurrentPage.Name = "TbCurrentPage";
             this.TbCurrentPage.Size = new System.Drawing.Size(125, 27);
             this.TbCurrentPage.TabIndex = 95;
@@ -92,7 +98,7 @@
             this.BtNextPage.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.BtNextPage.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.BtNextPage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtNextPage.Location = new System.Drawing.Point(779, 614);
+            this.BtNextPage.Location = new System.Drawing.Point(779, 638);
             this.BtNextPage.Name = "BtNextPage";
             this.BtNextPage.Size = new System.Drawing.Size(123, 35);
             this.BtNextPage.TabIndex = 94;
@@ -104,7 +110,7 @@
             // 
             this.BtReversePage.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.BtReversePage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtReversePage.Location = new System.Drawing.Point(147, 614);
+            this.BtReversePage.Location = new System.Drawing.Point(147, 638);
             this.BtReversePage.Name = "BtReversePage";
             this.BtReversePage.Size = new System.Drawing.Size(123, 35);
             this.BtReversePage.TabIndex = 93;
@@ -150,9 +156,9 @@
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.TbName);
-            this.panel1.Location = new System.Drawing.Point(251, 96);
+            this.panel1.Location = new System.Drawing.Point(251, 116);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(545, 149);
+            this.panel1.Size = new System.Drawing.Size(545, 154);
             this.panel1.TabIndex = 91;
             // 
             // NUDPriceBuy
@@ -217,15 +223,15 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(143, 60);
+            this.label3.Location = new System.Drawing.Point(128, 48);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 28);
+            this.label3.Size = new System.Drawing.Size(127, 28);
             this.label3.TabIndex = 90;
-            this.label3.Text = "Search";
+            this.label3.Text = "Search Name";
             // 
             // BtFind
             // 
-            this.BtFind.Location = new System.Drawing.Point(833, 60);
+            this.BtFind.Location = new System.Drawing.Point(823, 82);
             this.BtFind.Name = "BtFind";
             this.BtFind.Size = new System.Drawing.Size(94, 27);
             this.BtFind.TabIndex = 89;
@@ -237,7 +243,7 @@
             // 
             this.Dtg.BackgroundColor = System.Drawing.Color.White;
             this.Dtg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Dtg.Location = new System.Drawing.Point(147, 253);
+            this.Dtg.Location = new System.Drawing.Point(147, 281);
             this.Dtg.Name = "Dtg";
             this.Dtg.ReadOnly = true;
             this.Dtg.RowHeadersWidth = 51;
@@ -251,7 +257,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(417, 15);
+            this.label1.Location = new System.Drawing.Point(417, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(214, 38);
             this.label1.TabIndex = 83;
@@ -264,7 +270,7 @@
             this.BtRemove.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.BtRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtRemove.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtRemove.Location = new System.Drawing.Point(779, 674);
+            this.BtRemove.Location = new System.Drawing.Point(779, 685);
             this.BtRemove.Name = "BtRemove";
             this.BtRemove.Size = new System.Drawing.Size(123, 53);
             this.BtRemove.TabIndex = 86;
@@ -279,7 +285,7 @@
             this.BtUpdate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.BtUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtUpdate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtUpdate.Location = new System.Drawing.Point(482, 672);
+            this.BtUpdate.Location = new System.Drawing.Point(482, 683);
             this.BtUpdate.Name = "BtUpdate";
             this.BtUpdate.Size = new System.Drawing.Size(123, 53);
             this.BtUpdate.TabIndex = 85;
@@ -294,7 +300,7 @@
             this.BtAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtAdd.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtAdd.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.BtAdd.Location = new System.Drawing.Point(147, 672);
+            this.BtAdd.Location = new System.Drawing.Point(147, 683);
             this.BtAdd.Name = "BtAdd";
             this.BtAdd.Size = new System.Drawing.Size(123, 53);
             this.BtAdd.TabIndex = 84;
@@ -304,16 +310,77 @@
             // 
             // TbFind
             // 
-            this.TbFind.Location = new System.Drawing.Point(251, 61);
+            this.TbFind.Location = new System.Drawing.Point(12, 83);
             this.TbFind.Name = "TbFind";
-            this.TbFind.Size = new System.Drawing.Size(545, 27);
+            this.TbFind.Size = new System.Drawing.Size(358, 27);
             this.TbFind.TabIndex = 88;
+            // 
+            // NumericPriceMin
+            // 
+            this.NumericPriceMin.Enabled = false;
+            this.NumericPriceMin.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.NumericPriceMin.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.NumericPriceMin.Location = new System.Drawing.Point(923, 116);
+            this.NumericPriceMin.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.NumericPriceMin.Name = "NumericPriceMin";
+            this.NumericPriceMin.Size = new System.Drawing.Size(151, 27);
+            this.NumericPriceMin.TabIndex = 64;
+            this.NumericPriceMin.ThousandsSeparator = true;
+            // 
+            // NumericPriceMax
+            // 
+            this.NumericPriceMax.Enabled = false;
+            this.NumericPriceMax.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.NumericPriceMax.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.NumericPriceMax.Location = new System.Drawing.Point(923, 176);
+            this.NumericPriceMax.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.NumericPriceMax.Name = "NumericPriceMax";
+            this.NumericPriceMax.Size = new System.Drawing.Size(151, 27);
+            this.NumericPriceMax.TabIndex = 98;
+            this.NumericPriceMax.ThousandsSeparator = true;
+            // 
+            // TbId
+            // 
+            this.TbId.Location = new System.Drawing.Point(459, 83);
+            this.TbId.Name = "TbId";
+            this.TbId.Size = new System.Drawing.Size(358, 27);
+            this.TbId.TabIndex = 99;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label6.Location = new System.Drawing.Point(575, 48);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(94, 28);
+            this.label6.TabIndex = 100;
+            this.label6.Text = "Search ID";
             // 
             // FormProduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 743);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.TbId);
+            this.Controls.Add(this.NumericPriceMax);
+            this.Controls.Add(this.NumericPriceMin);
             this.Controls.Add(this.CbAllResult);
             this.Controls.Add(this.CbbIndexPage);
             this.Controls.Add(this.TbCurrentPage);
@@ -338,6 +405,8 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUDPriceBuy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dtg)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericPriceMin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumericPriceMax)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -366,5 +435,9 @@
         private Button BtUpdate;
         private Button BtAdd;
         private TextBox TbFind;
+        private NumericUpDown NumericPriceMin;
+        private NumericUpDown NumericPriceMax;
+        private TextBox TbId;
+        private Label label6;
     }
 }

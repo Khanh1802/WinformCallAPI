@@ -1,27 +1,23 @@
-using ClassLibrary1.Dtos.Generics;
+using CafeManagement.Application.Contracts.Services;
 using ClassLibrary1.Dtos.UserDtos;
-using ClassLibrary1.MemoryCacheKeys;
 using ConnectToAPI.FormHomePages;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Json;
 
 namespace ConnectToAPI.FormLogins
 {
     public partial class FormLogin : Form
     {
         private readonly IMemoryCache _memoryCache;
-        private bool _isLoadingDone = false;
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
 
-        public FormLogin(IMemoryCache memoryCache, HttpClient httpClient, IConfiguration configuration)
+        private bool _isLoadingDone = false;
+
+        public FormLogin(IMemoryCache memoryCache, IUserService userService)
         {
             InitializeComponent();
             _memoryCache = memoryCache;
-            _httpClient = httpClient;
-            _configuration = configuration;
+            _userService = userService;
         }
 
         private void BtPageRegister_Click(object sender, EventArgs e)
@@ -68,13 +64,11 @@ namespace ConnectToAPI.FormLogins
                     UserName = TbUserName.Text,
                     Password = TbPassword.Text,
                 };
-                var getToken = await _httpClient.PostAsJsonAsync(_configuration["CafeManagement:Login"], loginUser);
+                var isValidUser = await _userService.LoginAsync(loginUser);
                 try
                 {
-                    if (getToken.IsSuccessStatusCode)
+                    if (isValidUser)
                     {
-                        var token = (await getToken.Content.ReadFromJsonAsync<Generic<string>>()).Data;
-                        _memoryCache.Set(UserCache.UserKey, token);
                         var homePage = Program.ServiceProvider.GetService<FormHomePage>();
                         homePage.ShowDialog();
                     }

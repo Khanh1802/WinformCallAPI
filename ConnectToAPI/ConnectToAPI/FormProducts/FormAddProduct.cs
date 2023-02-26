@@ -1,33 +1,19 @@
-﻿using ClassLibrary1.Dtos.ProductDtos;
+﻿using CafeManagement.Application.Contracts.Services;
+using ClassLibrary1.Dtos.ProductDtos;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ConnectToAPI.FormProducts
 {
     public partial class FormAddProduct : Form
     {
         private readonly IMemoryCache _memoryCache;
-        private readonly IConfiguration _configuration;
-        private readonly HttpClient _httpClient;
+        private readonly IProductService _productService;
         public bool IsDeleted = false;
-        public FormAddProduct(IMemoryCache memoryCache, IConfiguration configuration, HttpClient httpClient)
+        public FormAddProduct(IMemoryCache memoryCache, IProductService productService)
         {
             InitializeComponent();
             _memoryCache = memoryCache;
-            _configuration = configuration;
-            _httpClient = httpClient;
+            _productService = productService;
         }
         private async void BtAdd_Click(object sender, EventArgs e)
         {
@@ -51,16 +37,12 @@ namespace ConnectToAPI.FormProducts
                     };
                     try
                     {
-                        var create = await _httpClient.PostAsJsonAsync("Product", createProduct);
-                        if (create.IsSuccessStatusCode)
+                        var create = await _productService.AddAsync(createProduct);
+                        if (create is not null)
                         {
                             MessageBox.Show("Create new product success", "Done", MessageBoxButtons.OK);
                             IsDeleted = true;
                             this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show($"{create.StatusCode}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     catch (Exception ex)
