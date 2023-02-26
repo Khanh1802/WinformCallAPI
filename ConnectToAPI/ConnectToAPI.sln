@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectToAPI", "ConnectToAPI\ConnectToAPI.csproj", "{E1383E0F-11E0-49DB-A3AB-03AB9C5484E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectToAPI", "ConnectToAPI\ConnectToAPI.csproj", "{E1383E0F-11E0-49DB-A3AB-03AB9C5484E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{A55C1B9F-4013-4D56-B8B6-C0016EDF7EFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CafeManagement.Shared", "ClassLibrary1\CafeManagement.Shared.csproj", "{A55C1B9F-4013-4D56-B8B6-C0016EDF7EFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeManagement.Application.Contracts", "CafeManagement.Application.Contracts\CafeManagement.Application.Contracts.csproj", "{5DEE335F-8372-43BB-9649-286957422D26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeManagement.Applications", "CafeManagement.Applications\CafeManagement.Applications.csproj", "{C5BAF264-4215-40A4-B510-C9A93323656E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{A55C1B9F-4013-4D56-B8B6-C0016EDF7EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A55C1B9F-4013-4D56-B8B6-C0016EDF7EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A55C1B9F-4013-4D56-B8B6-C0016EDF7EFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DEE335F-8372-43BB-9649-286957422D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DEE335F-8372-43BB-9649-286957422D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DEE335F-8372-43BB-9649-286957422D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DEE335F-8372-43BB-9649-286957422D26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5BAF264-4215-40A4-B510-C9A93323656E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5BAF264-4215-40A4-B510-C9A93323656E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5BAF264-4215-40A4-B510-C9A93323656E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5BAF264-4215-40A4-B510-C9A93323656E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

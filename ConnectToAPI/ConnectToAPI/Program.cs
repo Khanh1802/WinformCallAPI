@@ -1,3 +1,6 @@
+using CafeManagement.Application.Contracts.Services;
+using CafeManagement.Applications.Services;
+using CafeManagement.Shared.Options;
 using ConnectToAPI.Deletegate;
 using ConnectToAPI.FormHomePages;
 using ConnectToAPI.FormLogins;
@@ -28,34 +31,37 @@ namespace ConnectToAPI
             return Host.CreateDefaultBuilder()
           .ConfigureServices((context, services) =>
           {
+
               services.AddMemoryCache(option =>
               {
               });
+
+              #region Register Dependency
+              services.AddSingleton<FormProduct>();
               services.AddTransient<FormLogin>();
               services.AddTransient<FormHomePage>();
               services.AddTransient<CafeManagementHandler>();
               services.AddTransient<FormAddProduct>();
+              services.AddTransient<IProductService, ProductService>();
+              services.AddTransient<IUserService, UserService>();
+              #endregion
 
-              //services.AddHttpClient();
 
-              services.AddHttpClient<FormLogin>(opts =>
-              {
-                  opts.BaseAddress = new Uri(context.Configuration["CafeManagement:Endpoint"]);
-              });
-
-              services.AddHttpClient<FormProduct>(opts =>
-              {
-                  opts.BaseAddress = new Uri(context.Configuration["CafeManagement:Endpoint"]);
-              })
-              // Add Handler
-              .AddHttpMessageHandler<CafeManagementHandler>();
-
-              services.AddHttpClient<FormAddProduct>(opt =>
+              #region HttpClient
+              services.AddHttpClient<IProductService, ProductService>(opt =>
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:Endpoint"]);
-              })
-              .AddHttpMessageHandler<CafeManagementHandler>();
+              }).AddHttpMessageHandler<CafeManagementHandler>();
+
+              services.Configure<OptionsCafeManagement>(context.Configuration.GetSection("CafeManagement"));
+
+              services.AddHttpClient<IUserService, UserService>(opt =>
+              {
+                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:Endpoint"]);
+              });
+              
           });
+            #endregion
         }
     }
 }

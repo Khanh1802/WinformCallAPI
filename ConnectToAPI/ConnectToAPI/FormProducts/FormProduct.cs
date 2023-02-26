@@ -1,35 +1,30 @@
-﻿using ClassLibrary1.Dtos.Generics;
+﻿using CafeManagement.Application.Contracts.Services;
 using ClassLibrary1.Dtos.ProductDtos;
 using ClassLibrary1.Enums;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Json;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ConnectToAPI.FormProducts
 {
     public partial class FormProduct : Form
     {
         private readonly IMemoryCache _memoryCache;
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        private readonly IProductService _productService;
         private int _skipCount = 0;
         private int _takeMaxResultCount = 0;
         private Guid? _productId = null;
 
         internal bool _isLoadingDone = false;
 
-        public FormProduct(IMemoryCache memoryCache, HttpClient httpClient, IConfiguration configuration)
+        public FormProduct(IMemoryCache memoryCache, IProductService productService)
         {
             InitializeComponent();
             _memoryCache = memoryCache;
-            _httpClient = httpClient;
-            _configuration = configuration;
             CbbFilter.DataSource = EnumHelpers.GetEnumList<EnumProductFilter>();
             CbbFilter.DisplayMember = "Name";
             CbbIndexPage.DataSource = EnumHelpers.GetEnumList<EnumIndexPage>();
             CbbIndexPage.DisplayMember = "Name";
+            _productService = productService;
         }
         private async void BtAdd_Click(object sender, EventArgs e)
         {
@@ -53,15 +48,11 @@ namespace ConnectToAPI.FormProducts
                 };
                 try
                 {
-                    var update = await _httpClient.PutAsJsonAsync($"{_configuration["CafeManagement:PutProduct"]}/{(Guid)_productId}", updateProduct);
-                    if (update.IsSuccessStatusCode)
+                    var update = await _productService.UpdateAsync((Guid)_productId, updateProduct);
+                    if (update is not null)
                     {
                         MessageBox.Show("Update success", "Done", MessageBoxButtons.OK);
                         await RefreshDataGirdView();
-                    }
-                    else
-                    {
-                        MessageBox.Show($"{update.StatusCode}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 catch (Exception ex)
@@ -86,14 +77,10 @@ namespace ConnectToAPI.FormProducts
                         try
                         {
                             _isLoadingDone = false;
-                            var delete = await _httpClient.DeleteAsync($"{_configuration["CafeManagement:DeleteProduct"]}/{_productId}");
-                            if (delete.IsSuccessStatusCode)
+                            var delete = await _productService.DeletedAsync((Guid)_productId);
+                            if (delete)
                             {
                                 MessageBox.Show("Deleted product success", "Done", MessageBoxButtons.OK);
-                            }
-                            else
-                            {
-                                MessageBox.Show($"{delete.StatusCode}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                         catch (Exception ex)
@@ -121,82 +108,78 @@ namespace ConnectToAPI.FormProducts
             {
                 _takeMaxResultCount = Convert.ToInt32(indexPage.Name);
             }
-            var choice = -1;
+            FilterProductDto filterProduct = new FilterProductDto()
+            {
+                Name = TbFind.Text,
+                PriceMin = NumericPriceMin.Value,
+                Pricemax = NumericPriceMax.Value,
+                SkipCount = _skipCount,
+                TakeMaxResultCount = _takeMaxResultCount
+            };
 
             if (CbbFilter.SelectedItem is CommonEnumDto<EnumProductFilter> filter)
             {
-                choice = Convert.ToInt32(filter.Id);
+                filterProduct.Choice = Convert.ToInt32(filter.Id);
             }
+            Dtg.DataSource = await _productService.GetListAsync(filterProduct);
 
-            var getAll = await _httpClient.GetAsync($"{_configuration["CafeManagement:GetProduct"]}?SkipCount={_skipCount}&MaxResultCount={_takeMaxResultCount}");
-            try
+            if (Dtg?.Columns != null && Dtg.Columns.Contains("Id"))
             {
-                if (getAll.IsSuccessStatusCode)
-                {
-                    var data = (await getAll.Content.ReadFromJsonAsync<Generic<List<ProductDto>>>()).Data;
-                    Dtg.DataSource = data;
-
-                    if (Dtg?.Columns != null && Dtg.Columns.Contains("Id"))
-                    {
-                        Dtg.Columns["Id"]!.Visible = false;
-                    }
-
-                    if (Dtg?.Columns != null && Dtg.Columns.Contains("PriceBuy"))
-                    {
-                        Dtg.Columns["PriceBuy"]!.Visible = false;
-                    }
-
-                    BtAdd.Enabled = true;
-                    BtRemove.Enabled = false;
-                    BtUpdate.Enabled = false;
-                    TbName.Text = string.Empty;
-                    NUDPriceBuy.Value = 0;
-                    NUDPriceSell.Value = 0;
-                    _productId = null;
-                    TbName.Enabled = false;
-                    NUDPriceBuy.Enabled = false;
-                    NUDPriceSell.Enabled = false;
-                    _isLoadingDone = true;
-
-                }
-                else
-                {
-                    MessageBox.Show($"{getAll.StatusCode}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                Dtg.Columns["Id"]!.Visible = false;
             }
-            catch (Exception ex)
+
+            if (Dtg?.Columns != null && Dtg.Columns.Contains("PriceBuy"))
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Dtg.Columns["PriceBuy"]!.Visible = false;
             }
+
+            RefresheButton();
+        }
+
+        private void RefresheButton()
+        {
+            BtAdd.Enabled = true;
+            BtRemove.Enabled = false;
+            BtUpdate.Enabled = false;
+            TbName.Text = string.Empty;
+            NUDPriceBuy.Value = 0;
+            NUDPriceSell.Value = 0;
+            _productId = null;
+            TbName.Enabled = false;
+            NUDPriceBuy.Enabled = false;
+            NUDPriceSell.Enabled = false;
+            _isLoadingDone = true;
         }
 
         private async void BtFind_Click(object sender, EventArgs e)
         {
             _isLoadingDone = false;
-            if (!string.IsNullOrEmpty(TbFind.Text))
+            _skipCount = 0;
+            if (CbbIndexPage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+            {
+                _takeMaxResultCount = Convert.ToInt32(indexPage.Name);
+            }
+            if (!string.IsNullOrEmpty(TbFind.Text) || !string.IsNullOrEmpty(TbId.Text))
             {
                 CbAllResult.Checked = false;
                 var filter = new FilterProductDto()
                 {
                     Name = TbFind.Text,
+                    PriceMin = NumericPriceMin.Value,
+                    Pricemax = NumericPriceMax.Value,
+                    SkipCount = _skipCount,
+                    TakeMaxResultCount = _takeMaxResultCount
                 };
+                if (!string.IsNullOrEmpty(TbId.Text))
+                {
+                    Guid.TryParse(TbId.Text, out var id);
+                    filter.Id = id;
+                }
                 try
                 {
                     _isLoadingDone = false;
-                    var find = await _httpClient.GetAsync($"{_configuration["CafeManagement:FindProduct"]}?name={TbFind.Text}");
-                    if (find.IsSuccessStatusCode)
-                    {
-                        var data = (await find.Content.ReadFromJsonAsync<Generic<List<ProductDto>>>()).Data;
-                        Dtg.DataSource = data;
-                        if (data.Count == 0)
-                        {
-                            MessageBox.Show($"{find.StatusCode}", "Done", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show($"Not found any thing with \"{TbFind.Text}\"", "Done", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    var find = await _productService.GetListAsync(filter);
+                    Dtg.DataSource = find;
                     _isLoadingDone = true;
                 }
                 catch (Exception ex)
@@ -215,16 +198,7 @@ namespace ConnectToAPI.FormProducts
         {
             if (e.RowIndex == -1)
             {
-                BtAdd.Enabled = true;
-                BtRemove.Enabled = false;
-                BtUpdate.Enabled = false;
-                TbName.Text = string.Empty;
-                NUDPriceBuy.Value = 0;
-                NUDPriceSell.Value = 0;
-                _productId = null;
-                TbName.Enabled = false;
-                NUDPriceBuy.Enabled = false;
-                NUDPriceSell.Enabled = false;
+                RefresheButton();
             }
             else
             {
