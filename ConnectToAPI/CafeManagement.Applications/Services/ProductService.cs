@@ -10,9 +10,9 @@ namespace CafeManagement.Applications.Services
     public class ProductService : IProductService
     {
         private readonly HttpClient _httpClient;
-        private readonly OptionsCafeManagement _options;
+        private readonly OptionsProductst _options;
 
-        public ProductService(HttpClient httpClient, IOptions<OptionsCafeManagement> productOptions)
+        public ProductService(HttpClient httpClient, IOptions<OptionsProductst> productOptions)
         {
             _httpClient = httpClient;
             _options = productOptions.Value;
@@ -20,7 +20,7 @@ namespace CafeManagement.Applications.Services
 
         public async Task<ProductDto> AddAsync(CreateProductDto item)
         {
-            var create = await _httpClient.PostAsJsonAsync($"{_options.PostProduct}", item);
+            var create = await _httpClient.PostAsJsonAsync($"{_options.CreateProduct}", item);
             try
             {
                 create.EnsureSuccessStatusCode();
@@ -62,7 +62,7 @@ namespace CafeManagement.Applications.Services
 
         public async Task<ProductDto> UpdateAsync(Guid key, UpdateProductDto item)
         {
-            var update = await _httpClient.PutAsJsonAsync($"{_options.PutProduct}/{key}",item);
+            var update = await _httpClient.PutAsJsonAsync($"{_options.UpdateProduct}/{key}",item);
             try
             {
                 update.EnsureSuccessStatusCode();

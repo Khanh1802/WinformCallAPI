@@ -137,6 +137,7 @@
             this.BtPageInventory.TabIndex = 96;
             this.BtPageInventory.Text = "Inventory";
             this.BtPageInventory.UseVisualStyleBackColor = true;
+            this.BtPageInventory.Click += new System.EventHandler(this.BtPageInventory_Click);
             // 
             // BtPageWareHouse
             // 
@@ -148,6 +149,7 @@
             this.BtPageWareHouse.TabIndex = 95;
             this.BtPageWareHouse.Text = "Warehouse";
             this.BtPageWareHouse.UseVisualStyleBackColor = true;
+            this.BtPageWareHouse.Click += new System.EventHandler(this.BtPageWareHouse_Click);
             // 
             // BtPageProduct
             // 

@@ -3,8 +3,10 @@ using CafeManagement.Applications.Services;
 using CafeManagement.Shared.Options;
 using ConnectToAPI.Deletegate;
 using ConnectToAPI.FormHomePages;
+using ConnectToAPI.FormInventories;
 using ConnectToAPI.FormLogins;
 using ConnectToAPI.FormProducts;
+using ConnectToAPI.FormWarehouses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -42,26 +44,46 @@ namespace ConnectToAPI
               services.AddTransient<FormHomePage>();
               services.AddTransient<CafeManagementHandler>();
               services.AddTransient<FormAddProduct>();
+              services.AddTransient<FormWarehouse>();
+              services.AddTransient<FormAddWarehouse>();
+              services.AddTransient<FormInventory>();
               services.AddTransient<IProductService, ProductService>();
               services.AddTransient<IUserService, UserService>();
+              services.AddTransient<IWarehouseService, WarehouseService>();
+              services.AddTransient<IInventoryService, InventoryService>();
               #endregion
 
 
               #region HttpClient
               services.AddHttpClient<IProductService, ProductService>(opt =>
               {
-                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:Endpoint"]);
-              }).AddHttpMessageHandler<CafeManagementHandler>();
+                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+              }).AddHttpMessageHandler<CafeManagementHandler>(); // addToken                        
 
-              services.Configure<OptionsCafeManagement>(context.Configuration.GetSection("CafeManagement"));
+              services.AddHttpClient<IWarehouseService, WarehouseService>(opt =>
+              {
+                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+              }).AddHttpMessageHandler<CafeManagementHandler>(); // addToken
 
               services.AddHttpClient<IUserService, UserService>(opt =>
               {
-                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:Endpoint"]);
+                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
               });
-              
+
+              services.AddHttpClient<IInventoryService, InventoryService>(opt =>
+              {
+                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+              }).AddHttpMessageHandler<CafeManagementHandler>();
+              #endregion
+
+              #region Options
+              services.Configure<OptionsLogins>(context.Configuration.GetSection("CafeManagement"));
+              services.Configure<OptionsProductst>(context.Configuration.GetSection("CafeManagement:Products"));
+              services.Configure<OptionsWarehouses>(context.Configuration.GetSection("CafeManagement:Warehouses"));
+              services.Configure<OptionsInventories>(context.Configuration.GetSection("CafeManagement:Inventories"));
+              #endregion
+
           });
-            #endregion
         }
     }
 }

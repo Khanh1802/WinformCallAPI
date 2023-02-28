@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.CbAllResult = new System.Windows.Forms.CheckBox();
-            this.CbbIndexPage = new System.Windows.Forms.ComboBox();
+            this.FormWarehousePage = new System.Windows.Forms.ComboBox();
             this.TbCurrentPage = new System.Windows.Forms.TextBox();
             this.BtNextPage = new System.Windows.Forms.Button();
             this.BtReversePage = new System.Windows.Forms.Button();
@@ -71,19 +71,19 @@
             this.CbAllResult.Text = "All";
             this.CbAllResult.UseVisualStyleBackColor = true;
             // 
-            // CbbIndexPage
+            // FormWarehousePage
             // 
-            this.CbbIndexPage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CbbIndexPage.FormattingEnabled = true;
-            this.CbbIndexPage.Items.AddRange(new object[] {
+            this.FormWarehousePage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.FormWarehousePage.FormattingEnabled = true;
+            this.FormWarehousePage.Items.AddRange(new object[] {
             "5",
             "10",
             "15"});
-            this.CbbIndexPage.Location = new System.Drawing.Point(923, 336);
-            this.CbbIndexPage.Name = "CbbIndexPage";
-            this.CbbIndexPage.Size = new System.Drawing.Size(151, 28);
-            this.CbbIndexPage.TabIndex = 96;
-            this.CbbIndexPage.SelectedValueChanged += new System.EventHandler(this.CbbIndexPage_SelectedValueChanged);
+            this.FormWarehousePage.Location = new System.Drawing.Point(923, 336);
+            this.FormWarehousePage.Name = "FormWarehousePage";
+            this.FormWarehousePage.Size = new System.Drawing.Size(151, 28);
+            this.FormWarehousePage.TabIndex = 96;
+            this.FormWarehousePage.SelectedValueChanged += new System.EventHandler(this.FormWarehousePage_SelectedValueChanged);
             // 
             // TbCurrentPage
             // 
@@ -382,7 +382,7 @@
             this.Controls.Add(this.NumericPriceMax);
             this.Controls.Add(this.NumericPriceMin);
             this.Controls.Add(this.CbAllResult);
-            this.Controls.Add(this.CbbIndexPage);
+            this.Controls.Add(this.FormWarehousePage);
             this.Controls.Add(this.TbCurrentPage);
             this.Controls.Add(this.BtNextPage);
             this.Controls.Add(this.BtReversePage);
@@ -415,7 +415,7 @@
         #endregion
 
         private CheckBox CbAllResult;
-        private ComboBox CbbIndexPage;
+        private ComboBox FormWarehousePage;
         private TextBox TbCurrentPage;
         private Button BtNextPage;
         private Button BtReversePage;

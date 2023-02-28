@@ -13,6 +13,7 @@ namespace ConnectToAPI.FormProducts
         private int _skipCount = 0;
         private int _takeMaxResultCount = 0;
         private Guid? _productId = null;
+        private int _currentPage = 1;
 
         internal bool _isLoadingDone = false;
 
@@ -22,8 +23,8 @@ namespace ConnectToAPI.FormProducts
             _memoryCache = memoryCache;
             CbbFilter.DataSource = EnumHelpers.GetEnumList<EnumProductFilter>();
             CbbFilter.DisplayMember = "Name";
-            CbbIndexPage.DataSource = EnumHelpers.GetEnumList<EnumIndexPage>();
-            CbbIndexPage.DisplayMember = "Name";
+            FormWarehousePage.DataSource = EnumHelpers.GetEnumList<EnumIndexPage>();
+            FormWarehousePage.DisplayMember = "Name";
             _productService = productService;
         }
         private async void BtAdd_Click(object sender, EventArgs e)
@@ -104,7 +105,7 @@ namespace ConnectToAPI.FormProducts
         private async Task RefreshDataGirdView()
         {
             _isLoadingDone = false;
-            if (CbbIndexPage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+            if (FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
             {
                 _takeMaxResultCount = Convert.ToInt32(indexPage.Name);
             }
@@ -121,7 +122,8 @@ namespace ConnectToAPI.FormProducts
             {
                 filterProduct.Choice = Convert.ToInt32(filter.Id);
             }
-            Dtg.DataSource = await _productService.GetListAsync(filterProduct);
+            var data = await _productService.GetListAsync(filterProduct);
+            Dtg.DataSource = data;
 
             if (Dtg?.Columns != null && Dtg.Columns.Contains("Id"))
             {
@@ -155,7 +157,7 @@ namespace ConnectToAPI.FormProducts
         {
             _isLoadingDone = false;
             _skipCount = 0;
-            if (CbbIndexPage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+            if (FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
             {
                 _takeMaxResultCount = Convert.ToInt32(indexPage.Name);
             }
@@ -236,7 +238,7 @@ namespace ConnectToAPI.FormProducts
             {
                 _isLoadingDone = false;
                 //_currentPage++;
-                if (CbbIndexPage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+                if (FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
                 {
                     _skipCount += Convert.ToInt32(indexPage.Name);
                 }
@@ -250,7 +252,7 @@ namespace ConnectToAPI.FormProducts
             {
                 _isLoadingDone = false;
                 //_currentPage--;
-                if (CbbIndexPage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+                if (FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
                 {
                     _skipCount -= Convert.ToInt32(indexPage.Name);
                 }
@@ -258,9 +260,9 @@ namespace ConnectToAPI.FormProducts
             }
         }
 
-        private async void CbbIndexPage_SelectedValueChanged(object sender, EventArgs e)
+        private async void FormWarehousePage_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (_isLoadingDone && CbbIndexPage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+            if (_isLoadingDone && FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
             {
                 _skipCount = 0;
                 await RefreshDataGirdView();

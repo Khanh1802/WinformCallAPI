@@ -12,10 +12,10 @@ namespace CafeManagement.Applications.Services
     public class UserService : IUserService
     {
         private readonly HttpClient _httpClient;
-        private readonly OptionsCafeManagement _options;
+        private readonly OptionsLogins _options;
         private readonly IMemoryCache _memoryCache;
 
-        public UserService(HttpClient httpClient, IOptions<OptionsCafeManagement> options, IMemoryCache memoryCache)
+        public UserService(HttpClient httpClient, IOptions<OptionsLogins> options, IMemoryCache memoryCache)
         {
             _httpClient = httpClient;
             _options = options.Value;
@@ -36,7 +36,7 @@ namespace CafeManagement.Applications.Services
                 }              
                 return false;
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
