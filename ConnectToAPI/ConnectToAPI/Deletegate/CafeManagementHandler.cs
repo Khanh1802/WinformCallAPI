@@ -11,16 +11,6 @@ namespace ConnectToAPI.Deletegate
         {
             _memoryCache = memoryCache;
         }
-
-        //protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        //{
-        //    if (!request.Headers.Contains("Authorization"))
-        //    {
-        //        request.Headers.Add("Authorization", $"Bearer {_memoryCache.Get(UserCache.UserKey)}");
-        //    }
-
-        //    return base.SendAsync(request, cancellationToken);
-        //}
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if(!request.Headers.Contains("Authorziation"))

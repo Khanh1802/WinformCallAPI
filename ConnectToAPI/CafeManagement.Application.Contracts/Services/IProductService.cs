@@ -2,8 +2,8 @@
 
 namespace CafeManagement.Application.Contracts.Services
 {
-    public interface IProductService : IGenericService<ProductDto,CreateProductDto,Guid,UpdateProductDto>
+    public interface IProductService : IGenericService<ProductDto, CreateProductDto, Guid, UpdateProductDto, FilterProductDto>
     {
-        
+
     }
 }
