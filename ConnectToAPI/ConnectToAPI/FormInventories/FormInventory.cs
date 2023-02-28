@@ -195,9 +195,12 @@ namespace ConnectToAPI.FormInventories
             {
                 _isLoadingDone = false;
                 CbAllResult.Checked = false;
-                var dataGirdView = new List<InventoryDto>();
                 _isLoadingDone = false;
-                var filter = new FilterInventoryDto();
+                var filter = new FilterInventoryDto()
+                {
+                    TakeMaxResultCount = _takePage,
+                    SkipCount = _skipPage,
+                };
                 if (CbbProduct.SelectedItem is ProductDto productDto)
                 {
                     filter.ProductId = productDto.Id;
@@ -206,10 +209,26 @@ namespace ConnectToAPI.FormInventories
                 {
                     filter.WareHouseId = warehouseDto.Id;
                 }
+                if (CbbInventoryFilter.SelectedItem is CommonEnumDto<EnumChoiceFilter> enumFilter)
+                {
+                    filter.Choice = (int)enumFilter.Id;
+                }
+                if (!string.IsNullOrEmpty(TbId.Text))
+                {
+                    var convertGuid = Guid.TryParse(TbId.Text, out var id);
+                    if (convertGuid)
+                    {
+                        filter.Id = id;
+                    }
+                    else
+                    {
+                        filter.NameSearch = TbId.Text;
+                    }
+                }
                 if (filter.ProductId != null && filter.WareHouseId != null)
                 {
-                    //dataGirdView = await _inventoryService.FilterAsync(filter);
-                    //Dtg.DataSource = dataGirdView;
+                    var data = await _inventoryService.GetListAsync(filter);
+                    Dtg.DataSource = data;
                 }
 
                 BtRemove.Enabled = false;
@@ -298,14 +317,11 @@ namespace ConnectToAPI.FormInventories
                 {
                     await _inventoryService.UpdateAsync(_InventoryId.Value, updateInventory);
                     MessageBox.Show("Update success", "Done", MessageBoxButtons.OK);
+                    await RefreshDataGirdView();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    await RefreshDataGirdView();
                 }
             }
         }

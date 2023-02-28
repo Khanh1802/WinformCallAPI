@@ -47,6 +47,7 @@ namespace ConnectToAPI
               services.AddTransient<FormWarehouse>();
               services.AddTransient<FormAddWarehouse>();
               services.AddTransient<FormInventory>();
+              services.AddTransient<FormAddInventory>();
               services.AddTransient<IProductService, ProductService>();
               services.AddTransient<IUserService, UserService>();
               services.AddTransient<IWarehouseService, WarehouseService>();
@@ -54,7 +55,7 @@ namespace ConnectToAPI
               #endregion
 
 
-              #region HttpClient
+              #region Register HttpClient
               services.AddHttpClient<IProductService, ProductService>(opt =>
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
@@ -76,7 +77,7 @@ namespace ConnectToAPI
               }).AddHttpMessageHandler<CafeManagementHandler>();
               #endregion
 
-              #region Options
+              #region Register Options
               services.Configure<OptionsLogins>(context.Configuration.GetSection("CafeManagement"));
               services.Configure<OptionsProductst>(context.Configuration.GetSection("CafeManagement:Products"));
               services.Configure<OptionsWarehouses>(context.Configuration.GetSection("CafeManagement:Warehouses"));

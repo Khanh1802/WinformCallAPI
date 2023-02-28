@@ -51,7 +51,7 @@
             this.TbFind = new System.Windows.Forms.TextBox();
             this.NumericPriceMin = new System.Windows.Forms.NumericUpDown();
             this.NumericPriceMax = new System.Windows.Forms.NumericUpDown();
-            this.TbId = new System.Windows.Forms.TextBox();
+            this.TbSearch = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.NUDPriceSell)).BeginInit();
             this.panel1.SuspendLayout();
@@ -355,12 +355,12 @@
             this.NumericPriceMax.TabIndex = 98;
             this.NumericPriceMax.ThousandsSeparator = true;
             // 
-            // TbId
+            // TbSearch
             // 
-            this.TbId.Location = new System.Drawing.Point(459, 83);
-            this.TbId.Name = "TbId";
-            this.TbId.Size = new System.Drawing.Size(358, 27);
-            this.TbId.TabIndex = 99;
+            this.TbSearch.Location = new System.Drawing.Point(459, 83);
+            this.TbSearch.Name = "TbSearch";
+            this.TbSearch.Size = new System.Drawing.Size(358, 27);
+            this.TbSearch.TabIndex = 99;
             // 
             // label6
             // 
@@ -378,7 +378,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 743);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.TbId);
+            this.Controls.Add(this.TbSearch);
             this.Controls.Add(this.NumericPriceMax);
             this.Controls.Add(this.NumericPriceMin);
             this.Controls.Add(this.CbAllResult);
@@ -437,7 +437,7 @@
         private TextBox TbFind;
         private NumericUpDown NumericPriceMin;
         private NumericUpDown NumericPriceMax;
-        private TextBox TbId;
+        private TextBox TbSearch;
         private Label label6;
     }
 }

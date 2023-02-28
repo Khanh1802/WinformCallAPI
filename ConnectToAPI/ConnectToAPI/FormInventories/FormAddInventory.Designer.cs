@@ -145,8 +145,9 @@
             this.BtAdd.Name = "BtAdd";
             this.BtAdd.Size = new System.Drawing.Size(123, 40);
             this.BtAdd.TabIndex = 67;
-            this.BtAdd.Text = "AddAsync";
+            this.BtAdd.Text = "Add";
             this.BtAdd.UseVisualStyleBackColor = false;
+            this.BtAdd.Click += new System.EventHandler(this.BtAdd_Click);
             // 
             // FormAddInventory
             // 
@@ -159,6 +160,7 @@
             this.Name = "FormAddInventory";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormAddInventory";
+            this.Load += new System.EventHandler(this.FormAddInventory_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUDQuatity)).EndInit();

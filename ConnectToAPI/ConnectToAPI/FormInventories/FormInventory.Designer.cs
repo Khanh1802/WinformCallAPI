@@ -46,6 +46,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.BtFind = new System.Windows.Forms.Button();
             this.BtUpdate = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.TbId = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Dtg)).BeginInit();
             this.SuspendLayout();
@@ -54,7 +56,7 @@
             // 
             this.CbbInventoryFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CbbInventoryFilter.FormattingEnabled = true;
-            this.CbbInventoryFilter.Location = new System.Drawing.Point(921, 255);
+            this.CbbInventoryFilter.Location = new System.Drawing.Point(921, 333);
             this.CbbInventoryFilter.Name = "CbbInventoryFilter";
             this.CbbInventoryFilter.Size = new System.Drawing.Size(198, 28);
             this.CbbInventoryFilter.TabIndex = 100;
@@ -96,7 +98,7 @@
             // CbAllResult
             // 
             this.CbAllResult.AutoSize = true;
-            this.CbAllResult.Location = new System.Drawing.Point(1001, 68);
+            this.CbAllResult.Location = new System.Drawing.Point(1005, 114);
             this.CbAllResult.Name = "CbAllResult";
             this.CbAllResult.Size = new System.Drawing.Size(49, 24);
             this.CbAllResult.TabIndex = 96;
@@ -109,7 +111,7 @@
             this.CbbWareHouse.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.CbbWareHouse.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.CbbWareHouse.FormattingEnabled = true;
-            this.CbbWareHouse.Location = new System.Drawing.Point(575, 66);
+            this.CbbWareHouse.Location = new System.Drawing.Point(223, 112);
             this.CbbWareHouse.Name = "CbbWareHouse";
             this.CbbWareHouse.Size = new System.Drawing.Size(151, 28);
             this.CbbWareHouse.TabIndex = 95;
@@ -119,25 +121,24 @@
             this.CbbProduct.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.CbbProduct.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.CbbProduct.FormattingEnabled = true;
-            this.CbbProduct.Location = new System.Drawing.Point(346, 66);
+            this.CbbProduct.Location = new System.Drawing.Point(21, 112);
             this.CbbProduct.Name = "CbbProduct";
             this.CbbProduct.Size = new System.Drawing.Size(151, 28);
             this.CbbProduct.TabIndex = 94;
-            this.CbbProduct.SelectedIndexChanged += new System.EventHandler(this.CbbProduct_SelectedIndexChanged);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.panel1.Controls.Add(this.TbQuatity);
             this.panel1.Controls.Add(this.label2);
-            this.panel1.Location = new System.Drawing.Point(250, 103);
+            this.panel1.Location = new System.Drawing.Point(250, 154);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(545, 63);
             this.panel1.TabIndex = 92;
             // 
             // TbQuatity
             // 
-            this.TbQuatity.Location = new System.Drawing.Point(185, 23);
+            this.TbQuatity.Location = new System.Drawing.Point(185, 19);
             this.TbQuatity.Name = "TbQuatity";
             this.TbQuatity.ReadOnly = true;
             this.TbQuatity.Size = new System.Drawing.Size(290, 27);
@@ -147,7 +148,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(84, 19);
+            this.label2.Location = new System.Drawing.Point(84, 15);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 28);
             this.label2.TabIndex = 17;
@@ -157,13 +158,13 @@
             // 
             this.Dtg.BackgroundColor = System.Drawing.Color.White;
             this.Dtg.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Dtg.Location = new System.Drawing.Point(145, 172);
+            this.Dtg.Location = new System.Drawing.Point(145, 236);
             this.Dtg.Name = "Dtg";
             this.Dtg.ReadOnly = true;
             this.Dtg.RowHeadersWidth = 51;
             this.Dtg.RowTemplate.Height = 29;
             this.Dtg.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Dtg.Size = new System.Drawing.Size(755, 439);
+            this.Dtg.Size = new System.Drawing.Size(755, 375);
             this.Dtg.TabIndex = 89;
             this.Dtg.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Dtg_CellClick_1);
             // 
@@ -210,7 +211,7 @@
             // 
             this.CbbPage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CbbPage.FormattingEnabled = true;
-            this.CbbPage.Location = new System.Drawing.Point(921, 172);
+            this.CbbPage.Location = new System.Drawing.Point(931, 236);
             this.CbbPage.Name = "CbbPage";
             this.CbbPage.Size = new System.Drawing.Size(151, 28);
             this.CbbPage.TabIndex = 93;
@@ -220,15 +221,15 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(136, 66);
+            this.label3.Location = new System.Drawing.Point(128, 61);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 28);
+            this.label3.Size = new System.Drawing.Size(127, 28);
             this.label3.TabIndex = 91;
-            this.label3.Text = "Search";
+            this.label3.Text = "Search Name";
             // 
             // BtFind
             // 
-            this.BtFind.Location = new System.Drawing.Point(826, 67);
+            this.BtFind.Location = new System.Drawing.Point(832, 113);
             this.BtFind.Name = "BtFind";
             this.BtFind.Size = new System.Drawing.Size(94, 27);
             this.BtFind.TabIndex = 90;
@@ -251,11 +252,30 @@
             this.BtUpdate.UseVisualStyleBackColor = false;
             this.BtUpdate.Click += new System.EventHandler(this.BtUpdate_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label6.Location = new System.Drawing.Point(579, 61);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(70, 28);
+            this.label6.TabIndex = 103;
+            this.label6.Text = "Search";
+            // 
+            // TbId
+            // 
+            this.TbId.Location = new System.Drawing.Point(464, 112);
+            this.TbId.Name = "TbId";
+            this.TbId.Size = new System.Drawing.Size(358, 27);
+            this.TbId.TabIndex = 102;
+            // 
             // FormInventory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 743);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.TbId);
             this.Controls.Add(this.BtUpdate);
             this.Controls.Add(this.CbbInventoryFilter);
             this.Controls.Add(this.TbCurrentPage);
@@ -304,5 +324,7 @@
         private Label label3;
         private Button BtFind;
         private Button BtUpdate;
+        private Label label6;
+        private TextBox TbId;
     }
 }

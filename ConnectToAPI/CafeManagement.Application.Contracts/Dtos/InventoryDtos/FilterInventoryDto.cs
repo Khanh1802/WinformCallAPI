@@ -11,5 +11,6 @@
         public int? SkipCount { get; set; }
         public int? TakeMaxResultCount { get; set; }
         public int? Choice { get; set; }
+        public string? NameSearch { get; set; }
     }
 }

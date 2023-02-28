@@ -161,7 +161,7 @@ namespace ConnectToAPI.FormProducts
             {
                 _takeMaxResultCount = Convert.ToInt32(indexPage.Name);
             }
-            if (!string.IsNullOrEmpty(TbFind.Text) || !string.IsNullOrEmpty(TbId.Text))
+            if (!string.IsNullOrEmpty(TbFind.Text) || !string.IsNullOrEmpty(TbSearch.Text))
             {
                 CbAllResult.Checked = false;
                 var filter = new FilterProductDto()
@@ -172,10 +172,13 @@ namespace ConnectToAPI.FormProducts
                     SkipCount = _skipCount,
                     TakeMaxResultCount = _takeMaxResultCount
                 };
-                if (!string.IsNullOrEmpty(TbId.Text))
+                if (!string.IsNullOrEmpty(TbSearch.Text))
                 {
-                    Guid.TryParse(TbId.Text, out var id);
-                    filter.Id = id;
+                    var convertGuid = Guid.TryParse(TbSearch.Text, out var id);
+                    if (convertGuid)
+                    {
+                        filter.Id = id;
+                    }
                 }
                 try
                 {
