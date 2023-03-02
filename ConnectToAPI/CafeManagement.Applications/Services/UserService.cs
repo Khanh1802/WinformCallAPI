@@ -23,22 +23,22 @@ namespace CafeManagement.Applications.Services
         }
 
         public async Task<bool> LoginAsync(LoginUser loginUser)
-        {           
-            var getToken = await _httpClient.PostAsJsonAsync($"{_options.Login}", loginUser);
+        {
             try
             {
+                var getToken = await _httpClient.PostAsJsonAsync($"{_options.Login}", loginUser);
                 getToken.EnsureSuccessStatusCode();
                 var token = (await getToken.Content.ReadFromJsonAsync<Generic<string>>())?.Data;
-                if(!string.IsNullOrEmpty(token))
+                if (!string.IsNullOrEmpty(token))
                 {
                     _memoryCache.Set(UserCache.UserKey, token);
                     return true;
-                }              
+                }
                 return false;
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                throw new Exception(ex.Message);
             }
         }
     }

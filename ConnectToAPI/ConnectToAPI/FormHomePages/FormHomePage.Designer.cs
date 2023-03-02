@@ -126,6 +126,7 @@
             this.BtStatistic.TabIndex = 97;
             this.BtStatistic.Text = "Statistic";
             this.BtStatistic.UseVisualStyleBackColor = true;
+            this.BtStatistic.Click += new System.EventHandler(this.BtStatistic_Click);
             // 
             // BtPageInventory
             // 

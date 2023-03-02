@@ -126,13 +126,7 @@ namespace ConnectToAPI.FormWarehouses
 
         private async void CbbFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (CbbFilter.SelectedIndex != -1 && _isLoadingDone)
-            //{
-            //    var filter = CbbFilter.SelectedIndex;
-            //    _isLoadingDone = false;
-            //    Dtg.DataSource = await _warehouseService.FilterChoice(filter);
-            //    _isLoadingDone = true;
-            //}
+            await RefreshDataGirdView();
         }
 
         private async void BtFind_Click(object sender, EventArgs e)

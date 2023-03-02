@@ -1,16 +1,8 @@
 ﻿using ConnectToAPI.FormInventories;
 using ConnectToAPI.FormProducts;
+using ConnectToAPI.FormStatistics;
 using ConnectToAPI.FormWarehouses;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ConnectToAPI.FormHomePages
 {
@@ -37,6 +29,12 @@ namespace ConnectToAPI.FormHomePages
         {
             var pageInventory = Program.ServiceProvider.GetService<FormInventory>();
             pageInventory.ShowDialog();
+        }
+
+        private void BtStatistic_Click(object sender, EventArgs e)
+        {
+            var pageStatistics = Program.ServiceProvider.GetService<FormStatistic>();
+            pageStatistics.ShowDialog();
         }
     }
 }

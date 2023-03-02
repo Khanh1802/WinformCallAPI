@@ -13,7 +13,7 @@ namespace ConnectToAPI.FormProducts
         private int _skipCount = 0;
         private int _takeMaxResultCount = 0;
         private Guid? _productId = null;
-        private int _currentPage = 1;
+        //private int _currentPage = 1;
 
         internal bool _isLoadingDone = false;
 

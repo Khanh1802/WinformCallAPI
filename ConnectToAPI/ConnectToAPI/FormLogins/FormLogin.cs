@@ -64,9 +64,9 @@ namespace ConnectToAPI.FormLogins
                     UserName = TbUserName.Text,
                     Password = TbPassword.Text,
                 };
-                var isValidUser = await _userService.LoginAsync(loginUser);
                 try
                 {
+                    var isValidUser = await _userService.LoginAsync(loginUser);
                     if (isValidUser)
                     {
                         var homePage = Program.ServiceProvider.GetService<FormHomePage>();

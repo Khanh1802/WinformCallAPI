@@ -6,6 +6,7 @@ using ConnectToAPI.FormHomePages;
 using ConnectToAPI.FormInventories;
 using ConnectToAPI.FormLogins;
 using ConnectToAPI.FormProducts;
+using ConnectToAPI.FormStatistics;
 using ConnectToAPI.FormWarehouses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -48,10 +49,12 @@ namespace ConnectToAPI
               services.AddTransient<FormAddWarehouse>();
               services.AddTransient<FormInventory>();
               services.AddTransient<FormAddInventory>();
+              services.AddTransient<FormStatistic>();
               services.AddTransient<IProductService, ProductService>();
               services.AddTransient<IUserService, UserService>();
               services.AddTransient<IWarehouseService, WarehouseService>();
               services.AddTransient<IInventoryService, InventoryService>();
+              services.AddTransient<IInventoryTransactionService, InventoryTransactionService>();
               #endregion
 
 
@@ -75,6 +78,11 @@ namespace ConnectToAPI
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
               }).AddHttpMessageHandler<CafeManagementHandler>();
+
+              services.AddHttpClient<IInventoryTransactionService, InventoryTransactionService>(opt =>
+              {
+                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+              });
               #endregion
 
               #region Register Options
@@ -82,6 +90,7 @@ namespace ConnectToAPI
               services.Configure<OptionsProductst>(context.Configuration.GetSection("CafeManagement:Products"));
               services.Configure<OptionsWarehouses>(context.Configuration.GetSection("CafeManagement:Warehouses"));
               services.Configure<OptionsInventories>(context.Configuration.GetSection("CafeManagement:Inventories"));
+              services.Configure<OptionsInventoryTransactions>(context.Configuration.GetSection("CafeManagement:InventoryTransactions"));
               #endregion
 
           });
