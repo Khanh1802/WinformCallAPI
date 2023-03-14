@@ -1,4 +1,4 @@
-﻿using ClassLibrary1.MemoryCacheKeys;
+﻿using CafeManagement.Shared.MemoryCacheKeys;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace ConnectToAPI.Deletegate

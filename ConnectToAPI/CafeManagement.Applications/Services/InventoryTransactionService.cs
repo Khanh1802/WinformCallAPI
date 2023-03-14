@@ -1,9 +1,9 @@
 ﻿using CafeManagement.Application.Contracts.Dtos.InventoryTransactionDtos;
 using CafeManagement.Application.Contracts.Services;
 using CafeManagement.Shared.Options;
-using ClassLibrary1.Dtos.Generics;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
+using CafeManagement.Application.Contracts.Dtos.Generics;
 
 namespace CafeManagement.Applications.Services
 {

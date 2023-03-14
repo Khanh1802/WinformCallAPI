@@ -1,4 +1,4 @@
-﻿using ClassLibrary1.Dtos.ProductDtos;
+﻿using CafeManagement.Application.Contracts.Dtos.ProductDtos;
 
 namespace CafeManagement.Application.Contracts.Services
 {

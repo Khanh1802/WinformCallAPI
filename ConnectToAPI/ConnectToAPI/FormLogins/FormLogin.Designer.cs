@@ -81,6 +81,7 @@
             this.CbPassword.TabIndex = 68;
             this.CbPassword.Text = "View";
             this.CbPassword.UseVisualStyleBackColor = true;
+            this.CbPassword.CheckedChanged += new System.EventHandler(this.CbPassword_CheckedChanged);
             // 
             // TbPassword
             // 

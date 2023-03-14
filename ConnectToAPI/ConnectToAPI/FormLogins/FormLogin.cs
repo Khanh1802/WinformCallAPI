@@ -1,5 +1,5 @@
+using CafeManagement.Application.Contracts.Dtos.UserDtos;
 using CafeManagement.Application.Contracts.Services;
-using ClassLibrary1.Dtos.UserDtos;
 using ConnectToAPI.FormHomePages;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +40,20 @@ namespace ConnectToAPI.FormLogins
             RefreshPassword();
             RefreshTableLogin();
             _isLoadingDone = true;
+        }
+
+        private void CbPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CbPassword.Checked)
+            {
+                TbPassword.UseSystemPasswordChar = false;
+                CbPassword.Text = "Hide";
+            }
+            else
+            {
+                TbPassword.UseSystemPasswordChar = true;
+                CbPassword.Text = "View";
+            }
         }
 
         private async void BtLogin_Click(object sender, EventArgs e)

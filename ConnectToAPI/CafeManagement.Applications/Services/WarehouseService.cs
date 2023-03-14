@@ -1,9 +1,10 @@
 ﻿using CafeManagement.Application.Contracts.Dtos.WarehouseDtos;
 using CafeManagement.Application.Contracts.Services;
+using CafeManagement.Shared.Helper;
 using CafeManagement.Shared.Options;
-using ClassLibrary1.Dtos.Generics;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
+using CafeManagement.Application.Contracts.Dtos.Generics;
 
 namespace CafeManagement.Applications.Services
 {
@@ -28,16 +29,16 @@ namespace CafeManagement.Applications.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<WarehouseDto>> GetListAsync(FilterWarehouseDto filter)
+        public async Task<CommonPageDto<WarehouseDto>> GetListAsync(FilterWarehouseDto filter)
             {
             var getAll = await _httpClient.PostAsJsonAsync($"{_options.GetWarehouse}", filter);
             if (getAll.IsSuccessStatusCode)
             {
-                return (await getAll.Content.ReadFromJsonAsync<Generic<List<WarehouseDto>>>()).Data;
+                return (await getAll.Content.ReadFromJsonAsync<Generic<CommonPageDto<WarehouseDto>>>()).Data;
             }
             else
             {
-                return new List<WarehouseDto>();
+                return new CommonPageDto<WarehouseDto>();
             }
         }
 

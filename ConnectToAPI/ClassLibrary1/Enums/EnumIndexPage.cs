@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ClassLibrary1.Enums
+namespace CafeManagement.Shared.Enums
 {
     public enum EnumIndexPage
     {

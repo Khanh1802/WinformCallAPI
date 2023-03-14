@@ -1,6 +1,6 @@
-﻿using CafeManagement.Application.Contracts.Services;
-using ClassLibrary1.Dtos.ProductDtos;
-using ClassLibrary1.Enums;
+﻿using CafeManagement.Application.Contracts.Dtos.ProductDtos;
+using CafeManagement.Application.Contracts.Services;
+using CafeManagement.Shared.Enums;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +13,7 @@ namespace ConnectToAPI.FormProducts
         private int _skipCount = 0;
         private int _takeMaxResultCount = 0;
         private Guid? _productId = null;
-        //private int _currentPage = 1;
+        private int _currentPage = 1;
 
         internal bool _isLoadingDone = false;
 
@@ -21,10 +21,10 @@ namespace ConnectToAPI.FormProducts
         {
             InitializeComponent();
             _memoryCache = memoryCache;
-            CbbFilter.DataSource = EnumHelpers.GetEnumList<EnumProductFilter>();
-            CbbFilter.DisplayMember = "Name";
-            FormWarehousePage.DataSource = EnumHelpers.GetEnumList<EnumIndexPage>();
-            FormWarehousePage.DisplayMember = "Name";
+            CbbFilterPrice_Date.DataSource = EnumHelpers.GetEnumList<EnumProductFilter>();
+            CbbFilterPrice_Date.DisplayMember = "Name";
+            CbbPageIndex.DataSource = EnumHelpers.GetEnumList<EnumIndexPage>();
+            CbbPageIndex.DisplayMember = "Name";
             _productService = productService;
         }
         private async void BtAdd_Click(object sender, EventArgs e)
@@ -105,40 +105,27 @@ namespace ConnectToAPI.FormProducts
         private async Task RefreshDataGirdView()
         {
             _isLoadingDone = false;
-            if (FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+            if (CbbPageIndex.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
             {
                 _takeMaxResultCount = Convert.ToInt32(indexPage.Name);
             }
             FilterProductDto filterProduct = new FilterProductDto()
             {
-                Name = TbFind.Text,
                 PriceMin = NumericPriceMin.Value,
                 Pricemax = NumericPriceMax.Value,
                 SkipCount = _skipCount,
                 TakeMaxResultCount = _takeMaxResultCount
             };
 
-            if (CbbFilter.SelectedItem is CommonEnumDto<EnumProductFilter> filter)
+            if (CbbFilterPrice_Date.SelectedItem is CommonEnumDto<EnumProductFilter> filter)
             {
                 filterProduct.Choice = Convert.ToInt32(filter.Id);
             }
-            var data = await _productService.GetListAsync(filterProduct);
-            Dtg.DataSource = data;
-
-            if (Dtg?.Columns != null && Dtg.Columns.Contains("Id"))
-            {
-                Dtg.Columns["Id"]!.Visible = false;
-            }
-
-            if (Dtg?.Columns != null && Dtg.Columns.Contains("PriceBuy"))
-            {
-                Dtg.Columns["PriceBuy"]!.Visible = false;
-            }
-
-            RefresheButton();
+            await DataPageList(filterProduct);
+            RefesheButton();
         }
 
-        private void RefresheButton()
+        private void RefesheButton()
         {
             BtAdd.Enabled = true;
             BtRemove.Enabled = false;
@@ -157,34 +144,39 @@ namespace ConnectToAPI.FormProducts
         {
             _isLoadingDone = false;
             _skipCount = 0;
-            if (FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+            if (CbbPageIndex.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
             {
                 _takeMaxResultCount = Convert.ToInt32(indexPage.Name);
             }
-            if (!string.IsNullOrEmpty(TbFind.Text) || !string.IsNullOrEmpty(TbSearch.Text))
+            if (!string.IsNullOrEmpty(TbSearch.Text))
             {
                 CbAllResult.Checked = false;
-                var filter = new FilterProductDto()
+                var filterProduct = new FilterProductDto()
                 {
-                    Name = TbFind.Text,
                     PriceMin = NumericPriceMin.Value,
-                    Pricemax = NumericPriceMax.Value,
                     SkipCount = _skipCount,
                     TakeMaxResultCount = _takeMaxResultCount
                 };
-                if (!string.IsNullOrEmpty(TbSearch.Text))
+                if (Guid.TryParse(TbSearch.Text, out var guid))
                 {
-                    var convertGuid = Guid.TryParse(TbSearch.Text, out var id);
-                    if (convertGuid)
-                    {
-                        filter.Id = id;
-                    }
+                    filterProduct.Id = guid;
+                }
+                else
+                {
+                    filterProduct.Name = TbSearch.Text;
+                }
+                if (NumericPriceMax.Value > 0)
+                {
+                    filterProduct.Pricemax = NumericPriceMax.Value;
+                }
+                if (CbbFilterPrice_Date.SelectedItem is CommonEnumDto<EnumProductFilter> choice)
+                {
+                    filterProduct.Choice = Convert.ToInt32(choice.Id);
                 }
                 try
                 {
                     _isLoadingDone = false;
-                    var find = await _productService.GetListAsync(filter);
-                    Dtg.DataSource = find;
+                    await DataPageList(filterProduct);
                     _isLoadingDone = true;
                 }
                 catch (Exception ex)
@@ -203,7 +195,7 @@ namespace ConnectToAPI.FormProducts
         {
             if (e.RowIndex == -1)
             {
-                RefresheButton();
+                RefesheButton();
             }
             else
             {
@@ -224,12 +216,11 @@ namespace ConnectToAPI.FormProducts
             }
         }
 
-
-        private async void CbbFilter_SelectedIndexChanged(object sender, EventArgs e)
+        private async void CbbFilterPrice_Date_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_isLoadingDone)
             {
-                //_currentPage = 1;
+                _currentPage = 1;
                 _skipCount = 0;
                 await RefreshDataGirdView();
             }
@@ -240,8 +231,8 @@ namespace ConnectToAPI.FormProducts
             if (_isLoadingDone)
             {
                 _isLoadingDone = false;
-                //_currentPage++;
-                if (FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+                _currentPage++;
+                if (CbbPageIndex.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
                 {
                     _skipCount += Convert.ToInt32(indexPage.Name);
                 }
@@ -254,8 +245,8 @@ namespace ConnectToAPI.FormProducts
             if (_isLoadingDone)
             {
                 _isLoadingDone = false;
-                //_currentPage--;
-                if (FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+                _currentPage--;
+                if (CbbPageIndex.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
                 {
                     _skipCount -= Convert.ToInt32(indexPage.Name);
                 }
@@ -263,9 +254,9 @@ namespace ConnectToAPI.FormProducts
             }
         }
 
-        private async void FormWarehousePage_SelectedValueChanged(object sender, EventArgs e)
+        private async void CbbPageIndex_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (_isLoadingDone && FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
+            if (_isLoadingDone && CbbPageIndex.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
             {
                 _skipCount = 0;
                 await RefreshDataGirdView();
@@ -277,7 +268,7 @@ namespace ConnectToAPI.FormProducts
             if (_isLoadingDone && CbAllResult.Checked)
             {
                 _skipCount = 0;
-                //_currentPage = 1;
+                _currentPage = 1;
                 await RefreshDataGirdView();
             }
         }
@@ -291,6 +282,25 @@ namespace ConnectToAPI.FormProducts
             else
             {
                 e.Cancel = false;
+            }
+        }
+
+        private async Task DataPageList(FilterProductDto filterProduct)
+        {
+            var data = await _productService.GetListAsync(filterProduct);
+            Dtg.DataSource = data.Data;
+
+            TbCurrentPage.Text = $"{_currentPage}/{Convert.ToString(data.TotalPage)}";
+            BtNextPage.Enabled = data.HasNextPage == true ? true : false;
+            BtReversePage.Enabled = data.HasReversePage == true ? true : false;
+            if (Dtg?.Columns != null && Dtg.Columns.Contains("Id"))
+            {
+                Dtg.Columns["Id"]!.Visible = false;
+            }
+
+            if (Dtg?.Columns != null && Dtg.Columns.Contains("PriceBuy"))
+            {
+                Dtg.Columns["PriceBuy"]!.Visible = false;
             }
         }
     }

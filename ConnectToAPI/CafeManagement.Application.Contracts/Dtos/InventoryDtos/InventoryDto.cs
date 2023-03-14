@@ -1,5 +1,5 @@
-﻿using CafeManagement.Application.Contracts.Dtos.WarehouseDtos;
-using ClassLibrary1.Dtos.ProductDtos;
+﻿using CafeManagement.Application.Contracts.Dtos.ProductDtos;
+using CafeManagement.Application.Contracts.Dtos.WarehouseDtos;
 
 namespace CafeManagement.Application.Contracts.Dtos.InventoryDtos
 {

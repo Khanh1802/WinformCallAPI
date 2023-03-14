@@ -1,11 +1,11 @@
 ﻿using CafeManagement.Application.Contracts.Services;
 using CafeManagement.Shared.Options;
-using ClassLibrary1.Dtos.Generics;
-using ClassLibrary1.Dtos.UserDtos;
-using ClassLibrary1.MemoryCacheKeys;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
+using CafeManagement.Application.Contracts.Dtos.Generics;
+using CafeManagement.Application.Contracts.Dtos.UserDtos;
+using CafeManagement.Shared.MemoryCacheKeys;
 
 namespace CafeManagement.Applications.Services
 {
