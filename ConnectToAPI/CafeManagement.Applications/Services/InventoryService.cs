@@ -1,9 +1,10 @@
 ﻿using CafeManagement.Application.Contracts.Dtos.InventoryDtos;
 using CafeManagement.Application.Contracts.Services;
+using CafeManagement.Shared.Helper;
 using CafeManagement.Shared.Options;
-using ClassLibrary1.Dtos.Generics;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
+using CafeManagement.Application.Contracts.Dtos.Generics;
 
 namespace CafeManagement.Applications.Services
 {
@@ -50,16 +51,16 @@ namespace CafeManagement.Applications.Services
             }
         }
 
-        public async Task<List<InventoryDto>> GetListAsync(FilterInventoryDto filter)
+        public async Task<CommonPageDto<InventoryDto>> GetListAsync(FilterInventoryDto filter)
         {
             var getAll = await _httpClient.PostAsJsonAsync($"{_optionsInventories.GetInventory}", filter);
             if (getAll.IsSuccessStatusCode)
             {
-                return (await getAll.Content.ReadFromJsonAsync<Generic<List<InventoryDto>>>())?.Data ?? new List<InventoryDto>();
+                return (await getAll.Content.ReadFromJsonAsync<Generic<CommonPageDto<InventoryDto>>>())?.Data ?? new CommonPageDto<InventoryDto>();
             }
             else
             {
-                return new List<InventoryDto>();
+                return new CommonPageDto<InventoryDto>();
             }
         }
 

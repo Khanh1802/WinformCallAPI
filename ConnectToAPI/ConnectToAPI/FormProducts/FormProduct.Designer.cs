@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.CbAllResult = new System.Windows.Forms.CheckBox();
-            this.FormWarehousePage = new System.Windows.Forms.ComboBox();
+            this.CbbPageIndex = new System.Windows.Forms.ComboBox();
             this.TbCurrentPage = new System.Windows.Forms.TextBox();
             this.BtNextPage = new System.Windows.Forms.Button();
             this.BtReversePage = new System.Windows.Forms.Button();
-            this.CbbFilter = new System.Windows.Forms.ComboBox();
+            this.CbbFilterPrice_Date = new System.Windows.Forms.ComboBox();
             this.NUDPriceSell = new System.Windows.Forms.NumericUpDown();
             this.panel1 = new System.Windows.Forms.Panel();
             this.NUDPriceBuy = new System.Windows.Forms.NumericUpDown();
@@ -41,14 +41,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.TbName = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.BtFind = new System.Windows.Forms.Button();
             this.Dtg = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.BtRemove = new System.Windows.Forms.Button();
             this.BtUpdate = new System.Windows.Forms.Button();
             this.BtAdd = new System.Windows.Forms.Button();
-            this.TbFind = new System.Windows.Forms.TextBox();
             this.NumericPriceMin = new System.Windows.Forms.NumericUpDown();
             this.NumericPriceMax = new System.Windows.Forms.NumericUpDown();
             this.TbSearch = new System.Windows.Forms.TextBox();
@@ -71,19 +69,19 @@
             this.CbAllResult.Text = "All";
             this.CbAllResult.UseVisualStyleBackColor = true;
             // 
-            // FormWarehousePage
+            // CbbPageIndex
             // 
-            this.FormWarehousePage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.FormWarehousePage.FormattingEnabled = true;
-            this.FormWarehousePage.Items.AddRange(new object[] {
+            this.CbbPageIndex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CbbPageIndex.FormattingEnabled = true;
+            this.CbbPageIndex.Items.AddRange(new object[] {
             "5",
             "10",
             "15"});
-            this.FormWarehousePage.Location = new System.Drawing.Point(923, 336);
-            this.FormWarehousePage.Name = "FormWarehousePage";
-            this.FormWarehousePage.Size = new System.Drawing.Size(151, 28);
-            this.FormWarehousePage.TabIndex = 96;
-            this.FormWarehousePage.SelectedValueChanged += new System.EventHandler(this.FormWarehousePage_SelectedValueChanged);
+            this.CbbPageIndex.Location = new System.Drawing.Point(923, 364);
+            this.CbbPageIndex.Name = "CbbPageIndex";
+            this.CbbPageIndex.Size = new System.Drawing.Size(151, 28);
+            this.CbbPageIndex.TabIndex = 96;
+            this.CbbPageIndex.SelectedValueChanged += new System.EventHandler(this.CbbPageIndex_SelectedValueChanged);
             // 
             // TbCurrentPage
             // 
@@ -118,15 +116,15 @@
             this.BtReversePage.UseVisualStyleBackColor = true;
             this.BtReversePage.Click += new System.EventHandler(this.BtReversePage_Click);
             // 
-            // CbbFilter
+            // CbbFilterPrice_Date
             // 
-            this.CbbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CbbFilter.FormattingEnabled = true;
-            this.CbbFilter.Location = new System.Drawing.Point(923, 253);
-            this.CbbFilter.Name = "CbbFilter";
-            this.CbbFilter.Size = new System.Drawing.Size(151, 28);
-            this.CbbFilter.TabIndex = 92;
-            this.CbbFilter.SelectedIndexChanged += new System.EventHandler(this.CbbFilter_SelectedIndexChanged);
+            this.CbbFilterPrice_Date.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CbbFilterPrice_Date.FormattingEnabled = true;
+            this.CbbFilterPrice_Date.Location = new System.Drawing.Point(923, 281);
+            this.CbbFilterPrice_Date.Name = "CbbFilterPrice_Date";
+            this.CbbFilterPrice_Date.Size = new System.Drawing.Size(151, 28);
+            this.CbbFilterPrice_Date.TabIndex = 92;
+            this.CbbFilterPrice_Date.SelectedIndexChanged += new System.EventHandler(this.CbbFilterPrice_Date_SelectedIndexChanged);
             // 
             // NUDPriceSell
             // 
@@ -219,16 +217,6 @@
             this.TbName.Size = new System.Drawing.Size(290, 27);
             this.TbName.TabIndex = 10;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(128, 48);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(127, 28);
-            this.label3.TabIndex = 90;
-            this.label3.Text = "Search Name";
-            // 
             // BtFind
             // 
             this.BtFind.Location = new System.Drawing.Point(823, 82);
@@ -308,13 +296,6 @@
             this.BtAdd.UseVisualStyleBackColor = false;
             this.BtAdd.Click += new System.EventHandler(this.BtAdd_Click);
             // 
-            // TbFind
-            // 
-            this.TbFind.Location = new System.Drawing.Point(12, 83);
-            this.TbFind.Name = "TbFind";
-            this.TbFind.Size = new System.Drawing.Size(358, 27);
-            this.TbFind.TabIndex = 88;
-            // 
             // NumericPriceMin
             // 
             this.NumericPriceMin.Enabled = false;
@@ -357,16 +338,16 @@
             // 
             // TbSearch
             // 
-            this.TbSearch.Location = new System.Drawing.Point(459, 83);
+            this.TbSearch.Location = new System.Drawing.Point(251, 83);
             this.TbSearch.Name = "TbSearch";
-            this.TbSearch.Size = new System.Drawing.Size(358, 27);
+            this.TbSearch.Size = new System.Drawing.Size(545, 27);
             this.TbSearch.TabIndex = 99;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label6.Location = new System.Drawing.Point(575, 48);
+            this.label6.Location = new System.Drawing.Point(471, 48);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(94, 28);
             this.label6.TabIndex = 100;
@@ -376,26 +357,24 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1134, 743);
+            this.ClientSize = new System.Drawing.Size(1217, 743);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.TbSearch);
             this.Controls.Add(this.NumericPriceMax);
             this.Controls.Add(this.NumericPriceMin);
             this.Controls.Add(this.CbAllResult);
-            this.Controls.Add(this.FormWarehousePage);
+            this.Controls.Add(this.CbbPageIndex);
             this.Controls.Add(this.TbCurrentPage);
             this.Controls.Add(this.BtNextPage);
             this.Controls.Add(this.BtReversePage);
-            this.Controls.Add(this.CbbFilter);
+            this.Controls.Add(this.CbbFilterPrice_Date);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.BtFind);
             this.Controls.Add(this.Dtg);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.BtRemove);
             this.Controls.Add(this.BtUpdate);
             this.Controls.Add(this.BtAdd);
-            this.Controls.Add(this.TbFind);
             this.Name = "FormProduct";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormProduct";
@@ -415,11 +394,11 @@
         #endregion
 
         private CheckBox CbAllResult;
-        private ComboBox FormWarehousePage;
+        private ComboBox CbbPageIndex;
         private TextBox TbCurrentPage;
         private Button BtNextPage;
         private Button BtReversePage;
-        private ComboBox CbbFilter;
+        private ComboBox CbbFilterPrice_Date;
         private NumericUpDown NUDPriceSell;
         private Panel panel1;
         private NumericUpDown NUDPriceBuy;
@@ -427,14 +406,12 @@
         private Label label4;
         private Label label5;
         private TextBox TbName;
-        private Label label3;
         private Button BtFind;
         private DataGridView Dtg;
         private Label label1;
         private Button BtRemove;
         private Button BtUpdate;
         private Button BtAdd;
-        private TextBox TbFind;
         private NumericUpDown NumericPriceMin;
         private NumericUpDown NumericPriceMax;
         private TextBox TbSearch;

@@ -5,6 +5,7 @@ using ConnectToAPI.Deletegate;
 using ConnectToAPI.FormHomePages;
 using ConnectToAPI.FormInventories;
 using ConnectToAPI.FormLogins;
+using ConnectToAPI.FormOrders;
 using ConnectToAPI.FormProducts;
 using ConnectToAPI.FormStatistics;
 using ConnectToAPI.FormWarehouses;
@@ -50,11 +51,14 @@ namespace ConnectToAPI
               services.AddTransient<FormInventory>();
               services.AddTransient<FormAddInventory>();
               services.AddTransient<FormStatistic>();
+              services.AddTransient<FormOrder>();
               services.AddTransient<IProductService, ProductService>();
               services.AddTransient<IUserService, UserService>();
               services.AddTransient<IWarehouseService, WarehouseService>();
               services.AddTransient<IInventoryService, InventoryService>();
               services.AddTransient<IInventoryTransactionService, InventoryTransactionService>();
+              services.AddTransient<IOrderDetailService, OrderDetailService>();
+              services.AddTransient<ICartService, CartService>();
               #endregion
 
 
@@ -83,6 +87,16 @@ namespace ConnectToAPI
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
               });
+
+              services.AddHttpClient<IOrderDetailService, OrderDetailService>(opt =>
+              {
+                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+              }).AddHttpMessageHandler<CafeManagementHandler>();
+
+              services.AddHttpClient<ICartService, CartService>(opt =>
+              {
+                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+              }).AddHttpMessageHandler<CafeManagementHandler>();
               #endregion
 
               #region Register Options
@@ -91,6 +105,7 @@ namespace ConnectToAPI
               services.Configure<OptionsWarehouses>(context.Configuration.GetSection("CafeManagement:Warehouses"));
               services.Configure<OptionsInventories>(context.Configuration.GetSection("CafeManagement:Inventories"));
               services.Configure<OptionsInventoryTransactions>(context.Configuration.GetSection("CafeManagement:InventoryTransactions"));
+              services.Configure<OptionsCart>(context.Configuration.GetSection("CafeManagement:Carts"));
               #endregion
 
           });

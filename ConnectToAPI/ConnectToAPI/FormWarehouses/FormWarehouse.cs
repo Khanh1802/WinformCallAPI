@@ -1,7 +1,7 @@
 ﻿using CafeManagement.Application.Contracts.Dtos.WarehouseDtos;
 using CafeManagement.Application.Contracts.Services;
+using CafeManagement.Shared.Enums;
 using CafeManagement.Shared.Options;
-using ClassLibrary1.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 

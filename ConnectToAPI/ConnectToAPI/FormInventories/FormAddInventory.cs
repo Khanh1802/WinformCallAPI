@@ -1,7 +1,7 @@
 ﻿using CafeManagement.Application.Contracts.Dtos.InventoryDtos;
+using CafeManagement.Application.Contracts.Dtos.ProductDtos;
 using CafeManagement.Application.Contracts.Dtos.WarehouseDtos;
 using CafeManagement.Application.Contracts.Services;
-using ClassLibrary1.Dtos.ProductDtos;
 
 namespace ConnectToAPI.FormInventories
 {

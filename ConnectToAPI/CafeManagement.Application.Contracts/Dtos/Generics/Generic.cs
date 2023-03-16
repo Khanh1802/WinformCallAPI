@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary1.Dtos.Generics
+﻿namespace CafeManagement.Application.Contracts.Dtos.Generics
 {
     public class Generic<T>
     {

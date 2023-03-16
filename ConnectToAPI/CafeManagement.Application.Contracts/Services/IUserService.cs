@@ -1,4 +1,4 @@
-﻿using ClassLibrary1.Dtos.UserDtos;
+﻿using CafeManagement.Application.Contracts.Dtos.UserDtos;
 
 namespace CafeManagement.Application.Contracts.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary1.MemoryCacheKeys
+﻿namespace CafeManagement.Shared.MemoryCacheKeys
 {
     public class UserCache
     {

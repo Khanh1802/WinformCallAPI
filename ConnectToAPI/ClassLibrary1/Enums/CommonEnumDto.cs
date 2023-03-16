@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary1.Enums
+﻿namespace CafeManagement.Shared.Enums
 {
     public class CommonEnumDto<T>
     {

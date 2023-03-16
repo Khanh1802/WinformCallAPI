@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary1.Dtos.UserDtos
+﻿namespace CafeManagement.Application.Contracts.Dtos.UserDtos
 {
     public class UserDto
     {

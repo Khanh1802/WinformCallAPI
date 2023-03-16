@@ -1,5 +1,5 @@
-﻿using CafeManagement.Application.Contracts.Services;
-using ClassLibrary1.Dtos.ProductDtos;
+﻿using CafeManagement.Application.Contracts.Dtos.ProductDtos;
+using CafeManagement.Application.Contracts.Services;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace ConnectToAPI.FormProducts

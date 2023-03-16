@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace ClassLibrary1.Enums
+namespace CafeManagement.Shared.Enums
 {
     public static class EnumHelpers
     {

@@ -51,6 +51,7 @@
             this.BtOrder.TabIndex = 104;
             this.BtOrder.Text = "Order";
             this.BtOrder.UseVisualStyleBackColor = true;
+            this.BtOrder.Click += new System.EventHandler(this.BtOrder_Click);
             // 
             // TbNameUser
             // 
