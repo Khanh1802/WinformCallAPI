@@ -11,9 +11,9 @@ namespace CafeManagement.Applications.Services
     public class OrderDetailService : IOrderDetailService
     {
         private readonly HttpClient _httpClient;
-        private readonly OptionsOrders _options;
+        private readonly OptionsCart _options;
 
-        public OrderDetailService(HttpClient httpClient, IOptions<OptionsOrders> options)
+        public OrderDetailService(HttpClient httpClient, IOptions<OptionsCart> options)
         {
             _httpClient = httpClient;
             _options = options.Value;
@@ -23,7 +23,7 @@ namespace CafeManagement.Applications.Services
         {
             try
             {
-                var create = await _httpClient.PostAsJsonAsync($"{_options.CreateOrder}", item);
+                var create = await _httpClient.PostAsJsonAsync($"{_options.CreateCart}", item);
                 create.EnsureSuccessStatusCode();
                 return (await create.Content.ReadFromJsonAsync<Generic<OrderDetailDto>>()).Data;
             }

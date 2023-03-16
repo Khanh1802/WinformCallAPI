@@ -40,6 +40,14 @@
             this.NUDQuantity = new System.Windows.Forms.NumericUpDown();
             this.BtRemove = new System.Windows.Forms.Button();
             this.TbTotalBill = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.TbName = new System.Windows.Forms.TextBox();
+            this.TbPhone = new System.Windows.Forms.TextBox();
+            this.TbAddress = new System.Windows.Forms.TextBox();
+            this.CbbDelivery = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.NUDQuantity)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,6 +59,7 @@
             this.BtCancel.TabIndex = 0;
             this.BtCancel.Text = "Cancel";
             this.BtCancel.UseVisualStyleBackColor = true;
+            this.BtCancel.Click += new System.EventHandler(this.BtCancel_Click);
             // 
             // BtAccept
             // 
@@ -168,16 +177,94 @@
             // 
             // TbTotalBill
             // 
+            this.TbTotalBill.Enabled = false;
             this.TbTotalBill.Location = new System.Drawing.Point(83, 502);
             this.TbTotalBill.Name = "TbTotalBill";
             this.TbTotalBill.Size = new System.Drawing.Size(175, 27);
             this.TbTotalBill.TabIndex = 65;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(12, 568);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(64, 28);
+            this.label4.TabIndex = 66;
+            this.label4.Text = "Name";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label5.Location = new System.Drawing.Point(12, 642);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(67, 28);
+            this.label5.TabIndex = 67;
+            this.label5.Text = "Phone";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label6.Location = new System.Drawing.Point(415, 568);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(82, 28);
+            this.label6.TabIndex = 68;
+            this.label6.Text = "Address";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label7.Location = new System.Drawing.Point(415, 642);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(83, 28);
+            this.label7.TabIndex = 69;
+            this.label7.Text = "Delivery";
+            // 
+            // TbName
+            // 
+            this.TbName.Location = new System.Drawing.Point(82, 569);
+            this.TbName.Name = "TbName";
+            this.TbName.Size = new System.Drawing.Size(273, 27);
+            this.TbName.TabIndex = 70;
+            // 
+            // TbPhone
+            // 
+            this.TbPhone.Location = new System.Drawing.Point(85, 643);
+            this.TbPhone.Name = "TbPhone";
+            this.TbPhone.Size = new System.Drawing.Size(273, 27);
+            this.TbPhone.TabIndex = 71;
+            // 
+            // TbAddress
+            // 
+            this.TbAddress.Location = new System.Drawing.Point(534, 569);
+            this.TbAddress.Name = "TbAddress";
+            this.TbAddress.Size = new System.Drawing.Size(273, 27);
+            this.TbAddress.TabIndex = 72;
+            // 
+            // CbbDelivery
+            // 
+            this.CbbDelivery.FormattingEnabled = true;
+            this.CbbDelivery.Location = new System.Drawing.Point(534, 642);
+            this.CbbDelivery.Name = "CbbDelivery";
+            this.CbbDelivery.Size = new System.Drawing.Size(273, 28);
+            this.CbbDelivery.TabIndex = 73;
             // 
             // FormOrder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1217, 743);
+            this.Controls.Add(this.CbbDelivery);
+            this.Controls.Add(this.TbAddress);
+            this.Controls.Add(this.TbPhone);
+            this.Controls.Add(this.TbName);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.TbTotalBill);
             this.Controls.Add(this.BtRemove);
             this.Controls.Add(this.NUDQuantity);
@@ -215,5 +302,13 @@
         private NumericUpDown NUDQuantity;
         private Button BtRemove;
         private TextBox TbTotalBill;
+        private Label label4;
+        private Label label5;
+        private Label label6;
+        private Label label7;
+        private TextBox TbName;
+        private TextBox TbPhone;
+        private TextBox TbAddress;
+        private ComboBox CbbDelivery;
     }
 }
