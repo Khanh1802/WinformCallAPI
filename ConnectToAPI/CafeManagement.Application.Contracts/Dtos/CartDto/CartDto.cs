@@ -1,11 +1,14 @@
-﻿namespace CafeManagement.Application.Contracts.Dtos.CartDto
+﻿using CafeManagement.Shared.Enums;
+
+namespace CafeManagement.Application.Contracts.Dtos.CartDto
 {
     public class CartDto
     {
-        public Guid ProductId { get; set; }
-        public string ProductName { get; set; }
-        public int Quantity { get; set; }
-        public decimal Price { get; set; }
-        public decimal TotalPrice { get; set; }
+        public string CustomerName { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public decimal TotalBill { get; set; }
+        public EnumDelivery Delivery { get; set; }
+        public List<CartDetailDto> Carts { get; set; }
     }
 }

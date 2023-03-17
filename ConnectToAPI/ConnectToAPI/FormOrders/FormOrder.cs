@@ -2,9 +2,7 @@
 using CafeManagement.Application.Contracts.Dtos.ProductDtos;
 using CafeManagement.Application.Contracts.Services;
 using CafeManagement.Shared.Enums;
-using ConnectToAPI.FormHomePages;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ConnectToAPI.FormOrders
 {
@@ -61,7 +59,7 @@ namespace ConnectToAPI.FormOrders
 
         private async void BtAddCart_Click(object sender, EventArgs e)
         {
-            var createCart = new CreateShoppingDto();
+            var createCart = new CreateCartDto();
             if (string.IsNullOrEmpty(TbPhone.Text))
             {
                 MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -89,7 +87,7 @@ namespace ConnectToAPI.FormOrders
                 createCart.ProductId = nameAndPriceProductDto.ProductId;
                 createCart.TotalPrice = createCart.Price * createCart.Quantity;
             }
-            createCart.NameUser = TbName.Text;
+            createCart.CustomerName = TbName.Text;
             createCart.Address = TbAddress.Text;
             createCart.Phone = TbPhone.Text;
             try
@@ -212,16 +210,16 @@ namespace ConnectToAPI.FormOrders
                         string[] row = {getCart.Carts[i].ProductId.ToString(), getCart.Carts[i].ProductName, getCart.Carts[i].Quantity.ToString()
                             , getCart.Carts[i].Price.ToString(), getCart.Carts[i].TotalPrice.ToString()};
                         var listItem = new ListViewItem(row);
-                        totalBill += getCart.Carts[i].TotalPrice;
                         listView1.Items.Add(listItem);
                     }
                 }
+                TbTotalBill.Text = getCart.TotalBill.ToString();    
             }
-            TbTotalBill.Text = totalBill.ToString();
         }
 
         private async void BtRemove_Click(object sender, EventArgs e)
         {
+            #region CodeOld
             //if (listView1.SelectedItems.Count == 0)
             //{
             //    return;
@@ -240,7 +238,7 @@ namespace ConnectToAPI.FormOrders
             //    }
             //}
             //listView1.Items.Remove(listView1.SelectedItems[0]);
-
+            #endregion
             for (int i = 0; i < listView1.Items.Count; i++)
             {
                 if (listView1.Items[i].Selected)
@@ -254,9 +252,9 @@ namespace ConnectToAPI.FormOrders
                     };
                     try
                     {
-                       await _cartService.UpdateAsync(delete);
+                        await _cartService.UpdateAsync(delete);
                         MessageBox.Show("Remove success");
-                       await Refresh();
+                        await Refresh();
                     }
                     catch (Exception ex)
                     {

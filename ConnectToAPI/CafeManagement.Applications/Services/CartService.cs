@@ -18,13 +18,13 @@ namespace CafeManagement.Applications.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ShoppingCartDto> CreateCartAsync(CreateShoppingDto item)
+        public async Task<CartDto> CreateCartAsync(CreateCartDto item)
         {
             try
             {
                 var create = await _httpClient.PostAsJsonAsync($"{_optionsCart.CreateCart}", item);
                 create.EnsureSuccessStatusCode();
-                var cartDto = (await create.Content.ReadFromJsonAsync<ShoppingCartDto>());
+                var cartDto = (await create.Content.ReadFromJsonAsync<CartDto>());
                 return cartDto;
             }
             catch (Exception ex)
@@ -33,14 +33,14 @@ namespace CafeManagement.Applications.Services
             }
         }
 
-        public async Task<ShoppingCartDto> GetCartAsync(string id)
+        public async Task<CartDto> GetCartAsync(string id)
         {
             // _option.GetCart => GetCart ở đây là dựa vào string appsetting.json va class option
             try
             {
                 var getCart = await _httpClient.GetAsync($"{_optionsCart.GetCart}/{id}");
                 getCart.EnsureSuccessStatusCode();
-                var cartDto = (await getCart.Content.ReadFromJsonAsync<Generic<ShoppingCartDto>>()).Data ?? new ShoppingCartDto();
+                var cartDto = (await getCart.Content.ReadFromJsonAsync<Generic<CartDto>>()).Data ?? new CartDto();
                 return cartDto;
             }
             catch (Exception ex)
