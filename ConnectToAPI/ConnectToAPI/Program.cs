@@ -43,6 +43,7 @@ namespace ConnectToAPI
               #region Register Dependency
               services.AddSingleton<FormProduct>();
               services.AddTransient<FormLogin>();
+              services.AddTransient<FormRegister>();
               services.AddTransient<FormHomePage>();
               services.AddTransient<CafeManagementHandler>();
               services.AddTransient<FormAddProduct>();
@@ -100,7 +101,7 @@ namespace ConnectToAPI
               #endregion
 
               #region Register Options
-              services.Configure<OptionsLogins>(context.Configuration.GetSection("CafeManagement"));
+              services.Configure<OptionsLogins>(context.Configuration.GetSection("CafeManagement:Users"));
               services.Configure<OptionsProductst>(context.Configuration.GetSection("CafeManagement:Products"));
               services.Configure<OptionsWarehouses>(context.Configuration.GetSection("CafeManagement:Warehouses"));
               services.Configure<OptionsInventories>(context.Configuration.GetSection("CafeManagement:Inventories"));

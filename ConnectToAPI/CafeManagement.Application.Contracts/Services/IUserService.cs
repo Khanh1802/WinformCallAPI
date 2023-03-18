@@ -4,6 +4,6 @@ namespace CafeManagement.Application.Contracts.Services
 {
     public interface IUserService
     {
-        Task<bool> LoginAsync(LoginUser loginUser); 
+        Task<bool> LoginAsync(LoginUser loginUser);
     }
 }

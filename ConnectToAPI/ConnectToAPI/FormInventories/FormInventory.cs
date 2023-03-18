@@ -75,20 +75,22 @@ namespace ConnectToAPI.FormInventories
         private async Task RefreshCbb()
         {
             _isLoadingDone = false;
-            var product = new FilterProductDto()
+            var filterProductDto = new FilterProductDto()
             {
                 TakeMaxResultCount = 100,
                 SkipCount = 0,
                 Choice = 0
             };
-            var warehouse = new FilterWarehouseDto()
+            var filterWarehouseDto = new FilterWarehouseDto()
             {
                 TakeMaxResultCount = 100,
                 SkipCount = 0
             };
-            CbbProduct.DataSource = await _productService.GetListAsync(product);
+            var products = await _productService.GetListAsync(filterProductDto);
+            CbbProduct.DataSource = products.Data;
             CbbProduct.DisplayMember = "Name";
-            CbbWareHouse.DataSource = await _wareHouseService.GetListAsync(warehouse);
+            var warehouses = await _wareHouseService.GetListAsync(filterWarehouseDto);
+            CbbWareHouse.DataSource = warehouses.Data;
             CbbWareHouse.DisplayMember = "Name";
             _isLoadingDone = true;
         }

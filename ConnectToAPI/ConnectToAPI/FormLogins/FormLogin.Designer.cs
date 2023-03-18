@@ -48,6 +48,7 @@
             this.BtPageRegister.TabIndex = 84;
             this.BtPageRegister.Text = "Register";
             this.BtPageRegister.UseVisualStyleBackColor = true;
+            this.BtPageRegister.Click += new System.EventHandler(this.BtPageRegister_Click);
             // 
             // BtLogin
             // 

@@ -65,6 +65,7 @@
             this.BtReturn.TabIndex = 88;
             this.BtReturn.Text = "Return";
             this.BtReturn.UseVisualStyleBackColor = true;
+            this.BtReturn.Click += new System.EventHandler(this.BtReturn_Click);
             // 
             // BtRegister
             // 
@@ -74,6 +75,7 @@
             this.BtRegister.TabIndex = 87;
             this.BtRegister.Text = "Register";
             this.BtRegister.UseVisualStyleBackColor = true;
+            this.BtRegister.Click += new System.EventHandler(this.BtRegister_Click);
             // 
             // CbPassword
             // 
@@ -128,6 +130,7 @@
             this.BtCheckUserName.TabIndex = 84;
             this.BtCheckUserName.Text = "check";
             this.BtCheckUserName.UseVisualStyleBackColor = true;
+            this.BtCheckUserName.Click += new System.EventHandler(this.BtCheckUserName_Click);
             // 
             // TbUserName
             // 

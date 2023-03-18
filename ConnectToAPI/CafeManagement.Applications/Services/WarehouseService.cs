@@ -34,7 +34,7 @@ namespace CafeManagement.Applications.Services
             var getAll = await _httpClient.PostAsJsonAsync($"{_options.GetWarehouse}", filter);
             if (getAll.IsSuccessStatusCode)
             {
-                return (await getAll.Content.ReadFromJsonAsync<Generic<CommonPageDto<WarehouseDto>>>()).Data;
+                return (await getAll.Content.ReadFromJsonAsync<Generic<CommonPageDto<WarehouseDto>>>())?.Data ?? new CommonPageDto<WarehouseDto>();
             }
             else
             {

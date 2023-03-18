@@ -22,7 +22,8 @@ namespace ConnectToAPI.FormLogins
 
         private void BtPageRegister_Click(object sender, EventArgs e)
         {
-
+            var pageRegister = Program.ServiceProvider.GetService<FormRegister>();
+            pageRegister.ShowDialog();
         }
         private void RefreshPassword()
         {
