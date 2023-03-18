@@ -1,4 +1,5 @@
 ﻿using CafeManagement.Application.Contracts.Dtos.CartDto;
+using CafeManagement.Application.Contracts.Dtos.OrderDtos;
 using CafeManagement.Application.Contracts.Dtos.ProductDtos;
 using CafeManagement.Application.Contracts.Services;
 using CafeManagement.Shared.Enums;
@@ -9,16 +10,16 @@ namespace ConnectToAPI.FormOrders
     public partial class FormOrder : Form
     {
         private readonly IProductService _productService;
-        private readonly IOrderDetailService _orderDetailService;
+        private readonly IOrderService _orderService;
         private readonly IMemoryCache _memoryCache;
         private readonly ICartService _cartService;
         private int _skipCount = 0;
-        public FormOrder(IProductService productService, IOrderDetailService orderDetailService, IMemoryCache memoryCache, ICartService cartService)
+        public FormOrder(IProductService productService, IMemoryCache memoryCache, ICartService cartService, IOrderService orderService)
         {
             _productService = productService;
-            _orderDetailService = orderDetailService;
             _memoryCache = memoryCache;
             _cartService = cartService;
+            _orderService = orderService;
             InitializeComponent();
             CbbDelivery.DataSource = EnumHelpers.GetEnumList<EnumDelivery>();
             CbbDelivery.DisplayMember = "Name";
@@ -85,7 +86,6 @@ namespace ConnectToAPI.FormOrders
                 createCart.Price = nameAndPriceProductDto.Price;
                 createCart.Quantity = Convert.ToInt32(NUDQuantity.Value);
                 createCart.ProductId = nameAndPriceProductDto.ProductId;
-                createCart.TotalPrice = createCart.Price * createCart.Quantity;
             }
             createCart.CustomerName = TbName.Text;
             createCart.Address = TbAddress.Text;
@@ -213,7 +213,7 @@ namespace ConnectToAPI.FormOrders
                         listView1.Items.Add(listItem);
                     }
                 }
-                TbTotalBill.Text = getCart.TotalBill.ToString();    
+                TbTotalBill.Text = getCart.TotalBill.ToString();
             }
         }
 
@@ -280,9 +280,34 @@ namespace ConnectToAPI.FormOrders
             NUDQuantity.Text = quantity;
         }
 
-        private void BtAccept_Click(object sender, EventArgs e)
+        private async void BtAccept_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(TbPhone.Text))
+            {
+                return;
+            }
+            var cartDto = await _cartService.GetCartAsync(TbPhone.Text);
+            var createOrder = new CreateOrderDto()
+            {
+                Phone = TbPhone.Text,
+                TotalBill = cartDto.TotalBill,
+                CustomerName = cartDto.CustomerName,
+                OrderDetails = cartDto.Carts
+            };
 
+            if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
+            {
+                createOrder.Delivery = delivery.Id;
+            }
+
+            try
+            {
+                await _orderService.AddAsync(createOrder);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtCancel_Click(object sender, EventArgs e)

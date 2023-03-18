@@ -60,6 +60,7 @@ namespace ConnectToAPI
               services.AddTransient<IInventoryTransactionService, InventoryTransactionService>();
               services.AddTransient<IOrderDetailService, OrderDetailService>();
               services.AddTransient<ICartService, CartService>();
+              services.AddTransient<IOrderService, OrderService>();
               #endregion
 
 
@@ -98,6 +99,11 @@ namespace ConnectToAPI
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
               }).AddHttpMessageHandler<CafeManagementHandler>();
+
+              services.AddHttpClient<IOrderService, OrderService>(otp =>
+              {
+                  otp.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+              });
               #endregion
 
               #region Register Options
@@ -107,6 +113,8 @@ namespace ConnectToAPI
               services.Configure<OptionsInventories>(context.Configuration.GetSection("CafeManagement:Inventories"));
               services.Configure<OptionsInventoryTransactions>(context.Configuration.GetSection("CafeManagement:InventoryTransactions"));
               services.Configure<OptionsCart>(context.Configuration.GetSection("CafeManagement:Carts"));
+              services.Configure<OptionsOrder>(context.Configuration.GetSection("CafeManagement:Orders"));
+
               #endregion
 
           });

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CafeManagement.Shared.Options
+﻿namespace CafeManagement.Shared.Options
 {
-    internal class OptionsOrder
+    public class OptionsOrder
     {
+        public string CreateOrder { get; set; }
+        public string DeleteOrder { get; set; }
     }
 }

@@ -18,19 +18,6 @@ namespace CafeManagement.Applications.Services
             _httpClient = httpClient;
             _options = options.Value;
         }
-
-        public async Task<OrderDetailDto> CreateOrderDetailDtoAsync(CreateOrderDetailDto item)
-        {
-            try
-            {
-                var create = await _httpClient.PostAsJsonAsync($"{_options.CreateCart}", item);
-                create.EnsureSuccessStatusCode();
-                return (await create.Content.ReadFromJsonAsync<Generic<OrderDetailDto>>()).Data;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+        
     }
 }

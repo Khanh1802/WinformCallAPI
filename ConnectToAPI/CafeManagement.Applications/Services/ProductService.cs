@@ -21,9 +21,9 @@ namespace CafeManagement.Applications.Services
 
         public async Task<ProductDto> AddAsync(CreateProductDto item)
         {
-            var create = await _httpClient.PostAsJsonAsync($"{_options.CreateProduct}", item);
             try
             {
+                var create = await _httpClient.PostAsJsonAsync($"{_options.CreateProduct}", item);
                 create.EnsureSuccessStatusCode();
                 var productDto = (await create.Content.ReadFromJsonAsync<Generic<ProductDto>>()).Data;
                 return productDto;
@@ -36,9 +36,9 @@ namespace CafeManagement.Applications.Services
 
         public async Task<bool> DeletedAsync(Guid key)
         {
-            var delete = await _httpClient.DeleteAsync($"{_options.DeleteProduct}/{key}");
             try
             {
+                var delete = await _httpClient.DeleteAsync($"{_options.DeleteProduct}/{key}");
                 delete.EnsureSuccessStatusCode();
                 return true;
             }
@@ -63,9 +63,9 @@ namespace CafeManagement.Applications.Services
 
         public async Task<ProductDto> UpdateAsync(Guid key, UpdateProductDto item)
         {
-            var update = await _httpClient.PutAsJsonAsync($"{_options.UpdateProduct}/{key}",item);
             try
             {
+                var update = await _httpClient.PutAsJsonAsync($"{_options.UpdateProduct}/{key}", item);
                 update.EnsureSuccessStatusCode();
                 return (await update.Content.ReadFromJsonAsync<Generic<ProductDto>>()).Data;
             }
