@@ -77,13 +77,13 @@ namespace ConnectToAPI.FormInventories
             _isLoadingDone = false;
             var filterProductDto = new FilterProductDto()
             {
-                TakeMaxResultCount = 100,
+                MaxResultCount = 100,
                 SkipCount = 0,
                 Choice = 0
             };
             var filterWarehouseDto = new FilterWarehouseDto()
             {
-                TakeMaxResultCount = 100,
+                MaxResultCount = 100,
                 SkipCount = 0
             };
             var products = await _productService.GetListAsync(filterProductDto);
@@ -108,7 +108,7 @@ namespace ConnectToAPI.FormInventories
             _isLoadingDone = false;
             var filter = new FilterInventoryDto()
             {
-                TakeMaxResultCount = _takePage,
+                MaxResultCount = _takePage,
                 SkipCount = _skipPage,
             };
             if (CbbInventoryFilter.SelectedItem is CommonEnumDto<EnumChoiceFilter> enumFilter)
@@ -199,7 +199,7 @@ namespace ConnectToAPI.FormInventories
                 _isLoadingDone = false;
                 var filter = new FilterInventoryDto()
                 {
-                    TakeMaxResultCount = _takePage,
+                    MaxResultCount = _takePage,
                     SkipCount = _skipPage,
                 };
                 if (CbbProduct.SelectedItem is ProductDto productDto)

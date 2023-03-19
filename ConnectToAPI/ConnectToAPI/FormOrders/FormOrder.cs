@@ -30,7 +30,7 @@ namespace ConnectToAPI.FormOrders
             {
                 PriceMin = 0,
                 SkipCount = _skipCount,
-                TakeMaxResultCount = 5,
+                MaxResultCount = 5,
                 Name = CbbSearch.Text,
                 Choice = 1
             };
@@ -90,6 +90,12 @@ namespace ConnectToAPI.FormOrders
             createCart.CustomerName = TbName.Text;
             createCart.Address = TbAddress.Text;
             createCart.Phone = TbPhone.Text;
+
+            if (createCart.ProductId == Guid.Empty)
+            {
+                MessageBox.Show("Choice product", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             try
             {
                 var createAsync = await _cartService.CreateCartAsync(createCart);
@@ -173,7 +179,7 @@ namespace ConnectToAPI.FormOrders
             listView1.Columns.Add("Price", 200, HorizontalAlignment.Left);
             listView1.Columns.Add("Total price", 200, HorizontalAlignment.Left);
             listView1.FullRowSelect = true;
-
+            BtAccept.Enabled = false;
             #region MyRegion
             //_memoryCache.TryGetValue<ListView>(OrderCacheKey.OrderKey, out var result);
             //if (result != null)
@@ -213,6 +219,7 @@ namespace ConnectToAPI.FormOrders
                         listView1.Items.Add(listItem);
                     }
                 }
+                AllowBtAccept(getCart.Carts.Count);
                 TbTotalBill.Text = getCart.TotalBill.ToString();
             }
         }
@@ -299,10 +306,13 @@ namespace ConnectToAPI.FormOrders
             {
                 createOrder.Delivery = delivery.Id;
             }
-
+            AllowBtAccept(cartDto.Carts.Count);
             try
             {
                 await _orderService.AddAsync(createOrder);
+                BtAccept.Enabled = false;
+                RemoveText(); 
+                MessageBox.Show("Create order succsess", "Conratugration", MessageBoxButtons.OK);
             }
             catch (Exception ex)
             {
@@ -313,6 +323,27 @@ namespace ConnectToAPI.FormOrders
         private void BtCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void RemoveText()
+        {
+            TbPhone.Text = string.Empty;
+            TbAddress.Text = string.Empty;
+            TbName.Text = string.Empty;
+            TbTotalBill.Text = string.Empty;
+            listView1.Items.Clear();
+        }
+
+        private void AllowBtAccept(int count)
+        {
+            if (count > 0)
+            {
+                BtAccept.Enabled = true;
+            }
+            else
+            {
+                BtAccept.Enabled = false;
+            }
         }
     }
 }

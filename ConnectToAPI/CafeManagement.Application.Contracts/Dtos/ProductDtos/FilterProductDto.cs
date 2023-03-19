@@ -7,7 +7,7 @@
         public decimal? PriceMin { get; set; }
         public decimal? Pricemax { get; set; }
         public int? SkipCount { get; set; }
-        public int? TakeMaxResultCount { get; set; }
+        public int? MaxResultCount { get; set; }
         public int? Choice { get; set; }
     }
 }

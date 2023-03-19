@@ -72,13 +72,13 @@ namespace ConnectToAPI.FormInventories
             _isLoadingDone = false;
             var product = new FilterProductDto()
             {
-                TakeMaxResultCount = 100,
+                MaxResultCount = 100,
                 SkipCount = 0,
                 Choice = 0
             };
             var warehouse = new FilterWarehouseDto()
             {
-                TakeMaxResultCount = 100,
+                MaxResultCount = 100,
                 SkipCount = 0
             };
             CbbProduct.DataSource = await _productService.GetListAsync(product);

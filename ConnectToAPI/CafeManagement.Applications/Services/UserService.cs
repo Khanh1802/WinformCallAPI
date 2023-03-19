@@ -28,7 +28,7 @@ namespace CafeManagement.Applications.Services
             {
                 var getToken = await _httpClient.PostAsJsonAsync($"{_options.Login}", loginUser);
                 getToken.EnsureSuccessStatusCode();
-                var token = (await getToken.Content.ReadFromJsonAsync<Generic<string>>())?.Data;
+                var token = (await getToken.Content.ReadFromJsonAsync<GenericResponse<string>>())?.Data;
                 if (!string.IsNullOrEmpty(token))
                 {
                     _memoryCache.Set(UserCache.UserKey, token);

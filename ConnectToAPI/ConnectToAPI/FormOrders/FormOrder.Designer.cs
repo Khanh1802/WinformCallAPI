@@ -63,6 +63,7 @@
             // 
             // BtAccept
             // 
+            this.BtAccept.Enabled = false;
             this.BtAccept.Location = new System.Drawing.Point(722, 492);
             this.BtAccept.Name = "BtAccept";
             this.BtAccept.Size = new System.Drawing.Size(113, 46);

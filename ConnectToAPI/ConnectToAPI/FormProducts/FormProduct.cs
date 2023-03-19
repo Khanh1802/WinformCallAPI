@@ -114,7 +114,7 @@ namespace ConnectToAPI.FormProducts
                 PriceMin = NumericPriceMin.Value,
                 Pricemax = NumericPriceMax.Value,
                 SkipCount = _skipCount,
-                TakeMaxResultCount = _takeMaxResultCount
+                MaxResultCount = _takeMaxResultCount
             };
 
             if (CbbFilterPrice_Date.SelectedItem is CommonEnumDto<EnumProductFilter> filter)
@@ -155,7 +155,7 @@ namespace ConnectToAPI.FormProducts
                 {
                     PriceMin = NumericPriceMin.Value,
                     SkipCount = _skipCount,
-                    TakeMaxResultCount = _takeMaxResultCount
+                    MaxResultCount = _takeMaxResultCount
                 };
                 if (Guid.TryParse(TbSearch.Text, out var guid))
                 {
