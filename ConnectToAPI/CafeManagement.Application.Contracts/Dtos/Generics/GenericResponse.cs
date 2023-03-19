@@ -1,9 +1,9 @@
 ﻿namespace CafeManagement.Application.Contracts.Dtos.Generics
 {
-    public class Generic<T>
+    public class GenericResponse<T> where T : class
     {
         public bool IsSuccess { get; set; }
-        public string Messeage { get; set; }
+        public string Message { get; set; }
         public T Data { get; set; }
     }
 }

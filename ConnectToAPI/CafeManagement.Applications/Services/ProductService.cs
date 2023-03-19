@@ -25,7 +25,7 @@ namespace CafeManagement.Applications.Services
             {
                 var create = await _httpClient.PostAsJsonAsync($"{_options.CreateProduct}", item);
                 create.EnsureSuccessStatusCode();
-                var productDto = (await create.Content.ReadFromJsonAsync<Generic<ProductDto>>()).Data;
+                var productDto = (await create.Content.ReadFromJsonAsync<GenericResponse<ProductDto>>()).Data;
                 return productDto;
             }
             catch
@@ -53,7 +53,7 @@ namespace CafeManagement.Applications.Services
             var getAll = await _httpClient.PostAsJsonAsync($"{_options.GetProduct}",filterProduct);
             if (getAll.IsSuccessStatusCode)
             {
-                return (await getAll.Content.ReadFromJsonAsync<Generic<CommonPageDto<ProductDto>>>())?.Data ?? new CommonPageDto<ProductDto>();
+                return (await getAll.Content.ReadFromJsonAsync<GenericResponse<CommonPageDto<ProductDto>>>())?.Data ?? new CommonPageDto<ProductDto>();
             }
             else
             {
@@ -67,7 +67,7 @@ namespace CafeManagement.Applications.Services
             {
                 var update = await _httpClient.PutAsJsonAsync($"{_options.UpdateProduct}/{key}", item);
                 update.EnsureSuccessStatusCode();
-                return (await update.Content.ReadFromJsonAsync<Generic<ProductDto>>()).Data;
+                return (await update.Content.ReadFromJsonAsync<GenericResponse<ProductDto>>()).Data;
             }
             catch
             {

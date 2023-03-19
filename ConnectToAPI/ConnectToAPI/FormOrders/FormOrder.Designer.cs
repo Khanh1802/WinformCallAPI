@@ -48,6 +48,9 @@
             this.TbPhone = new System.Windows.Forms.TextBox();
             this.TbAddress = new System.Windows.Forms.TextBox();
             this.CbbDelivery = new System.Windows.Forms.ComboBox();
+            this.TbCurrentPage = new System.Windows.Forms.TextBox();
+            this.BtNextPage = new System.Windows.Forms.Button();
+            this.BtReversePage = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.NUDQuantity)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,6 +66,7 @@
             // 
             // BtAccept
             // 
+            this.BtAccept.Enabled = false;
             this.BtAccept.Location = new System.Drawing.Point(722, 492);
             this.BtAccept.Name = "BtAccept";
             this.BtAccept.Size = new System.Drawing.Size(113, 46);
@@ -252,11 +256,45 @@
             this.CbbDelivery.Size = new System.Drawing.Size(273, 28);
             this.CbbDelivery.TabIndex = 73;
             // 
+            // TbCurrentPage
+            // 
+            this.TbCurrentPage.Enabled = false;
+            this.TbCurrentPage.Location = new System.Drawing.Point(831, 16);
+            this.TbCurrentPage.Name = "TbCurrentPage";
+            this.TbCurrentPage.Size = new System.Drawing.Size(125, 27);
+            this.TbCurrentPage.TabIndex = 98;
+            // 
+            // BtNextPage
+            // 
+            this.BtNextPage.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.BtNextPage.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.BtNextPage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtNextPage.Location = new System.Drawing.Point(971, 12);
+            this.BtNextPage.Name = "BtNextPage";
+            this.BtNextPage.Size = new System.Drawing.Size(123, 35);
+            this.BtNextPage.TabIndex = 97;
+            this.BtNextPage.Text = "Next page";
+            this.BtNextPage.UseVisualStyleBackColor = true;
+            // 
+            // BtReversePage
+            // 
+            this.BtReversePage.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.BtReversePage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtReversePage.Location = new System.Drawing.Point(693, 12);
+            this.BtReversePage.Name = "BtReversePage";
+            this.BtReversePage.Size = new System.Drawing.Size(123, 35);
+            this.BtReversePage.TabIndex = 96;
+            this.BtReversePage.Text = "Reverse page";
+            this.BtReversePage.UseVisualStyleBackColor = true;
+            // 
             // FormOrder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1217, 743);
+            this.Controls.Add(this.TbCurrentPage);
+            this.Controls.Add(this.BtNextPage);
+            this.Controls.Add(this.BtReversePage);
             this.Controls.Add(this.CbbDelivery);
             this.Controls.Add(this.TbAddress);
             this.Controls.Add(this.TbPhone);
@@ -310,5 +348,8 @@
         private TextBox TbPhone;
         private TextBox TbAddress;
         private ComboBox CbbDelivery;
+        private TextBox TbCurrentPage;
+        private Button BtNextPage;
+        private Button BtReversePage;
     }
 }

@@ -28,7 +28,7 @@ namespace CafeManagement.Applications.Services
                 {
                     return null;
                 }
-                return (await create.Content.ReadFromJsonAsync<Generic<InventoryTransactionDto>>()).Data;
+                return (await create.Content.ReadFromJsonAsync<GenericResponse<InventoryTransactionDto>>()).Data;
             }
             catch (Exception ex)
             {
@@ -43,7 +43,7 @@ namespace CafeManagement.Applications.Services
                 var getAll = await _httpClient.PostAsJsonAsync($"{_options.GetInventoryStatistics}", item);
                 if (getAll.IsSuccessStatusCode)
                 {
-                    return (await getAll.Content.ReadFromJsonAsync<Generic<List<InventoryTransactionDto>>>()).Data;
+                    return (await getAll.Content.ReadFromJsonAsync<GenericResponse<List<InventoryTransactionDto>>>()).Data;
                 }
                 return new List<InventoryTransactionDto>();
             }

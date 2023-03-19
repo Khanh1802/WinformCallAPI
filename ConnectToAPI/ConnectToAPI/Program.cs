@@ -68,41 +68,49 @@ namespace ConnectToAPI
               services.AddHttpClient<IProductService, ProductService>(opt =>
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+                  opt.Timeout = TimeSpan.FromMinutes(5);
               }).AddHttpMessageHandler<CafeManagementHandler>(); // addToken                        
 
               services.AddHttpClient<IWarehouseService, WarehouseService>(opt =>
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+                  opt.Timeout = TimeSpan.FromMinutes(5);
               }).AddHttpMessageHandler<CafeManagementHandler>(); // addToken
 
               services.AddHttpClient<IUserService, UserService>(opt =>
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+                  opt.Timeout = TimeSpan.FromMinutes(5);
               });
 
               services.AddHttpClient<IInventoryService, InventoryService>(opt =>
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+                  opt.Timeout = TimeSpan.FromMinutes(5);
               }).AddHttpMessageHandler<CafeManagementHandler>();
 
               services.AddHttpClient<IInventoryTransactionService, InventoryTransactionService>(opt =>
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+                  opt.Timeout = TimeSpan.FromMinutes(5);
               });
 
               services.AddHttpClient<IOrderDetailService, OrderDetailService>(opt =>
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+                  opt.Timeout = TimeSpan.FromMinutes(5);
               }).AddHttpMessageHandler<CafeManagementHandler>();
 
               services.AddHttpClient<ICartService, CartService>(opt =>
               {
                   opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+                  opt.Timeout = TimeSpan.FromMinutes(5);
               }).AddHttpMessageHandler<CafeManagementHandler>();
 
-              services.AddHttpClient<IOrderService, OrderService>(otp =>
+              services.AddHttpClient<IOrderService, OrderService>(opt =>
               {
-                  otp.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+                  opt.BaseAddress = new Uri(context.Configuration["CafeManagement:EndPoint"]);
+                  opt.Timeout = TimeSpan.FromMinutes(5);
               });
               #endregion
 

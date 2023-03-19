@@ -25,7 +25,7 @@ namespace CafeManagement.Applications.Services
             {
                 var create = await _httpClient.PostAsJsonAsync($"{_optionsInventories.CreateInventory}", item);
                 create.EnsureSuccessStatusCode();
-                return (await create.Content.ReadFromJsonAsync<Generic<InventoryDto>>()).Data;
+                return (await create.Content.ReadFromJsonAsync<GenericResponse<InventoryDto>>()).Data;
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace CafeManagement.Applications.Services
             var getAll = await _httpClient.PostAsJsonAsync($"{_optionsInventories.GetInventory}", filter);
             if (getAll.IsSuccessStatusCode)
             {
-                return (await getAll.Content.ReadFromJsonAsync<Generic<CommonPageDto<InventoryDto>>>())?.Data ?? new CommonPageDto<InventoryDto>();
+                return (await getAll.Content.ReadFromJsonAsync<GenericResponse<CommonPageDto<InventoryDto>>>())?.Data ?? new CommonPageDto<InventoryDto>();
             }
             else
             {
@@ -71,7 +71,7 @@ namespace CafeManagement.Applications.Services
                 var update = await _httpClient.PutAsJsonAsync($"{_optionsInventories.UpdateInventory}/{key}", item);
                 if (update.IsSuccessStatusCode)
                 {
-                    return (await update.Content.ReadFromJsonAsync<Generic<InventoryDto>>()).Data;
+                    return (await update.Content.ReadFromJsonAsync<GenericResponse<InventoryDto>>()).Data;
                 }
                 else
                 {

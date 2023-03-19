@@ -138,7 +138,7 @@ namespace ConnectToAPI.FormWarehouses
                 {
                     Name = TbFind.Text,
                     SkipCount = _skipCount,
-                    TakeMaxResultCount = _takeMaxResultCount
+                    MaxResultCount = _takeMaxResultCount
                 };
                 if (!string.IsNullOrEmpty(TbId.Text))
                 {
@@ -175,7 +175,7 @@ namespace ConnectToAPI.FormWarehouses
                 {
                     Name = TbFind.Text,
                     SkipCount = _skipCount,
-                    TakeMaxResultCount = _takeMaxResultCount
+                    MaxResultCount = _takeMaxResultCount
                 };
                 Dtg.DataSource = await _warehouseService.GetListAsync(filter);
                 if (Dtg?.Columns != null && Dtg.Columns.Contains("Id"))

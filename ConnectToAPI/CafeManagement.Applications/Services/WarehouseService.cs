@@ -5,6 +5,7 @@ using CafeManagement.Shared.Options;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using CafeManagement.Application.Contracts.Dtos.Generics;
+using CafeManagement.Application.Contracts.Dtos.ProductDtos;
 
 namespace CafeManagement.Applications.Services
 {
@@ -34,7 +35,7 @@ namespace CafeManagement.Applications.Services
             var getAll = await _httpClient.PostAsJsonAsync($"{_options.GetWarehouse}", filter);
             if (getAll.IsSuccessStatusCode)
             {
-                return (await getAll.Content.ReadFromJsonAsync<Generic<CommonPageDto<WarehouseDto>>>())?.Data ?? new CommonPageDto<WarehouseDto>();
+                return (await getAll.Content.ReadFromJsonAsync<GenericResponse<CommonPageDto<WarehouseDto>>>())?.Data ?? new CommonPageDto<WarehouseDto>();
             }
             else
             {

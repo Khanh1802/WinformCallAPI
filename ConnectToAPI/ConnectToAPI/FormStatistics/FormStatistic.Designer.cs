@@ -166,6 +166,7 @@
             this.BtReversePage.TabIndex = 108;
             this.BtReversePage.Text = "Reverse page";
             this.BtReversePage.UseVisualStyleBackColor = true;
+            this.BtReversePage.Click += new System.EventHandler(this.BtReversePage_Click);
             // 
             // BtNextPage
             // 
@@ -178,6 +179,7 @@
             this.BtNextPage.TabIndex = 109;
             this.BtNextPage.Text = "Next page";
             this.BtNextPage.UseVisualStyleBackColor = true;
+            this.BtNextPage.Click += new System.EventHandler(this.BtNextPage_Click);
             // 
             // TbCurrentPage
             // 

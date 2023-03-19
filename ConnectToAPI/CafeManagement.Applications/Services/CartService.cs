@@ -40,7 +40,7 @@ namespace CafeManagement.Applications.Services
             {
                 var getCart = await _httpClient.GetAsync($"{_optionsCart.GetCart}/{id}");
                 getCart.EnsureSuccessStatusCode();
-                var cartDto = (await getCart.Content.ReadFromJsonAsync<Generic<CartDto>>()).Data ?? new CartDto();
+                var cartDto = (await getCart.Content.ReadFromJsonAsync<GenericResponse<CartDto>>()).Data ?? new CartDto();
                 return cartDto;
             }
             catch (Exception ex)

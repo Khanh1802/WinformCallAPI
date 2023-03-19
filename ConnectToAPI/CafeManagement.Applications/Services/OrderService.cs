@@ -20,19 +20,17 @@ namespace CafeManagement.Applications.Services
 
         public async Task<OrderDto> AddAsync(CreateOrderDto item)
         {
+            var create = await _httpClient.PostAsJsonAsync($"{_optionsOrder.CreateOrder}", item);
+
+            var response = await create.Content.ReadFromJsonAsync<GenericResponse<OrderDto>>();
             try
             {
-                if (item.OrderDetails.Count == 0)
-                {
-                    throw new Exception("Cart is empty");
-                }
-                var create = await _httpClient.PostAsJsonAsync($"{_optionsOrder.CreateOrder}", item);
                 create.EnsureSuccessStatusCode();
-                return (await create.Content.ReadFromJsonAsync<Generic<OrderDto>>()).Data;
+                return response.Data;
             }
-            catch (Exception ex)
+            catch
             {
-                throw new Exception(ex.Message);
+                throw new Exception(response.Message);
             }
         }
 

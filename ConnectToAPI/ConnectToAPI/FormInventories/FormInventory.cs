@@ -16,6 +16,7 @@ namespace ConnectToAPI.FormInventories
         private Guid? _InventoryId;
         private int _takePage = 0;
         private int _skipPage = 0;
+        private int _currentPage = 1;
 
         public FormInventory(IInventoryService inventoryService,
             IProductService productService,
@@ -77,13 +78,13 @@ namespace ConnectToAPI.FormInventories
             _isLoadingDone = false;
             var filterProductDto = new FilterProductDto()
             {
-                TakeMaxResultCount = 100,
+                MaxResultCount = 100,
                 SkipCount = 0,
                 Choice = 0
             };
             var filterWarehouseDto = new FilterWarehouseDto()
             {
-                TakeMaxResultCount = 100,
+                MaxResultCount = 100,
                 SkipCount = 0
             };
             var products = await _productService.GetListAsync(filterProductDto);
@@ -108,7 +109,7 @@ namespace ConnectToAPI.FormInventories
             _isLoadingDone = false;
             var filter = new FilterInventoryDto()
             {
-                TakeMaxResultCount = _takePage,
+                MaxResultCount = _takePage,
                 SkipCount = _skipPage,
             };
             if (CbbInventoryFilter.SelectedItem is CommonEnumDto<EnumChoiceFilter> enumFilter)
@@ -116,8 +117,11 @@ namespace ConnectToAPI.FormInventories
                 filter.Choice = (int)enumFilter.Id;
             }
             var data = await _inventoryService.GetListAsync(filter);
-            Dtg.DataSource = data;
+            Dtg.DataSource = data.Data;
 
+            TbCurrentPage.Text = $"{_currentPage}/{Convert.ToString(data.TotalPage)}";
+            BtNextPage.Enabled = data.HasNextPage == true ? true : false;
+            BtReversePage.Enabled = data.HasReversePage == true ? true : false;
             if (Dtg?.Columns != null && Dtg.Columns.Contains("Id"))
             {
                 Dtg.Columns["Id"]!.Visible = false;
@@ -157,6 +161,7 @@ namespace ConnectToAPI.FormInventories
         {
             if (_isLoadingDone)
             {
+                _currentPage--;
                 if (CbbPage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
                 {
                     _skipPage -= Convert.ToInt32(indexPage.Name);
@@ -169,6 +174,7 @@ namespace ConnectToAPI.FormInventories
         {
             if (_isLoadingDone)
             {
+                _currentPage++;
                 if (CbbPage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
                 {
                     _skipPage += Convert.ToInt32(indexPage.Name);
@@ -199,7 +205,7 @@ namespace ConnectToAPI.FormInventories
                 _isLoadingDone = false;
                 var filter = new FilterInventoryDto()
                 {
-                    TakeMaxResultCount = _takePage,
+                    MaxResultCount = _takePage,
                     SkipCount = _skipPage,
                 };
                 if (CbbProduct.SelectedItem is ProductDto productDto)
@@ -229,7 +235,10 @@ namespace ConnectToAPI.FormInventories
                 if (filter.ProductId != null && filter.WareHouseId != null)
                 {
                     var data = await _inventoryService.GetListAsync(filter);
-                    Dtg.DataSource = data;
+                    Dtg.DataSource = data.Data;
+                    TbCurrentPage.Text = $"{_currentPage}/{Convert.ToString(data.TotalPage)}";
+                    BtNextPage.Enabled = data.HasNextPage == true ? true : false;
+                    BtReversePage.Enabled = data.HasReversePage == true ? true : false;
                 }
 
                 BtRemove.Enabled = false;
