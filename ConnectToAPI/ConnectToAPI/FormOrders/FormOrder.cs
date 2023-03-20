@@ -30,8 +30,29 @@ namespace ConnectToAPI.FormOrders
         {
             if (_isLoadingDone)
             {
+<<<<<<< HEAD
                 _isLoadingDone = false;
                 var filterProduct = new FilterProductDto()
+=======
+                PriceMin = 0,
+                SkipCount = _skipCount,
+                MaxResultCount = 5,
+                Name = CbbSearch.Text,
+                Choice = 1
+            };
+
+            var data = await _productService.GetListAsync(filterProduct);
+            if (data.Data.Count == 0)
+            {
+                MessageBox.Show($"Not found {CbbSearch.Text}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CbbSearch.Text = string.Empty;
+                return;
+            }
+            var andPriceProductDtos = new List<GetNameAndPriceProductDto>();
+            foreach (var p in data.Data)
+            {
+                var NameAndPrice = new GetNameAndPriceProductDto()
+>>>>>>> bb0f959bed39c1d3a2a56a35d950b89ca9105e9a
                 {
                     PriceMin = 0,
                     SkipCount = _skipCount,
@@ -69,6 +90,7 @@ namespace ConnectToAPI.FormOrders
         {
             if (_isLoadingDone)
             {
+<<<<<<< HEAD
                 _isLoadingDone = false;
                 var createCart = new CreateCartDto();
                 if (string.IsNullOrEmpty(TbPhone.Text))
@@ -100,6 +122,50 @@ namespace ConnectToAPI.FormOrders
                 createCart.CustomerName = TbName.Text;
                 createCart.Address = TbAddress.Text;
                 createCart.Phone = TbPhone.Text;
+=======
+                MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (string.IsNullOrEmpty(TbAddress.Text))
+            {
+                MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (string.IsNullOrEmpty(TbName.Text))
+            {
+                MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            //if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
+            //{
+            //    createCart.Delivery = delivery.Id;
+            //}
+            if (CbbSearch.SelectedItem is GetNameAndPriceProductDto nameAndPriceProductDto)
+            {
+                createCart.NameProduct = nameAndPriceProductDto.Name;
+                createCart.Price = nameAndPriceProductDto.Price;
+                createCart.Quantity = Convert.ToInt32(NUDQuantity.Value);
+                createCart.ProductId = nameAndPriceProductDto.ProductId;
+            }
+            createCart.CustomerName = TbName.Text;
+            createCart.Address = TbAddress.Text;
+            createCart.Phone = TbPhone.Text;
+
+            if (createCart.ProductId == Guid.Empty)
+            {
+                MessageBox.Show("Choice product", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            try
+            {
+                var createAsync = await _cartService.CreateCartAsync(createCart);
+                await Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+>>>>>>> bb0f959bed39c1d3a2a56a35d950b89ca9105e9a
 
                 if (createCart.ProductId == Guid.Empty)
                 {
@@ -311,6 +377,7 @@ namespace ConnectToAPI.FormOrders
             if (_isLoadingDone)
             {
 
+<<<<<<< HEAD
                 if (string.IsNullOrEmpty(TbPhone.Text))
                 {
                     return;
@@ -340,6 +407,23 @@ namespace ConnectToAPI.FormOrders
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+=======
+            if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
+            {
+                createOrder.Delivery = delivery.Id;
+            }
+            AllowBtAccept(cartDto.Carts.Count);
+            try
+            {
+                await _orderService.AddAsync(createOrder);
+                BtAccept.Enabled = false;
+                RemoveText(); 
+                MessageBox.Show("Create order succsess", "Conratugration", MessageBoxButtons.OK);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+>>>>>>> bb0f959bed39c1d3a2a56a35d950b89ca9105e9a
             }
         }
 
