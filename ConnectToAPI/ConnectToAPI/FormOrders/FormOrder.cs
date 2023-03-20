@@ -23,8 +23,15 @@
         {
             if (_isLoadingDone)
             {
+<<<<<<< HEAD
                 _isLoadingDone = false;
                 var filterProduct = new FilterProductDto()
+=======
+<<<<<<< HEAD
+                _isLoadingDone = false;
+                var filterProduct = new FilterProductDto()
+=======
+>>>>>>> 458e76291cf53257a3b727b0ee43f5e596007e0d
                 PriceMin = 0,
                 SkipCount = _skipCount,
                 MaxResultCount = 5,
@@ -43,6 +50,10 @@
             foreach (var p in data.Data)
             {
                 var NameAndPrice = new GetNameAndPriceProductDto()
+<<<<<<< HEAD
+=======
+>>>>>>> bb0f959bed39c1d3a2a56a35d950b89ca9105e9a
+>>>>>>> 458e76291cf53257a3b727b0ee43f5e596007e0d
                 {
                     PriceMin = 0,
                     SkipCount = _skipCount,
@@ -80,6 +91,10 @@
         {
             if (_isLoadingDone)
             {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 458e76291cf53257a3b727b0ee43f5e596007e0d
                 _isLoadingDone = false;
                 var createCart = new CreateCartDto();
                 if (string.IsNullOrEmpty(TbPhone.Text))
@@ -111,6 +126,10 @@
                 createCart.CustomerName = TbName.Text;
                 createCart.Address = TbAddress.Text;
                 createCart.Phone = TbPhone.Text;
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 458e76291cf53257a3b727b0ee43f5e596007e0d
                 MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -153,6 +172,10 @@
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+<<<<<<< HEAD
+=======
+>>>>>>> bb0f959bed39c1d3a2a56a35d950b89ca9105e9a
+>>>>>>> 458e76291cf53257a3b727b0ee43f5e596007e0d
 
             if (createCart.ProductId == Guid.Empty)
             {
@@ -376,6 +399,40 @@
                 OrderDetails = cartDto.Carts
             };
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+                if (string.IsNullOrEmpty(TbPhone.Text))
+                {
+                    return;
+                }
+                var cartDto = await _cartService.GetCartAsync(TbPhone.Text);
+                var createOrder = new CreateOrderDto()
+                {
+                    Phone = TbPhone.Text,
+                    TotalBill = cartDto.TotalBill,
+                    CustomerName = cartDto.CustomerName,
+                    OrderDetails = cartDto.Carts
+                };
+
+                if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
+                {
+                    createOrder.Delivery = delivery.Id;
+                }
+                AllowBtAccept(cartDto.Carts.Count);
+                try
+                {
+                    await _orderService.AddAsync(createOrder);
+                    BtAccept.Enabled = false;
+                    RemoveText();
+                    MessageBox.Show("Create order succsess", "Conratugration", MessageBoxButtons.OK);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+=======
+>>>>>>> 458e76291cf53257a3b727b0ee43f5e596007e0d
             if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
             {
                 createOrder.Delivery = delivery.Id;
@@ -385,6 +442,7 @@
             {
                 await _orderService.AddAsync(createOrder);
                 BtAccept.Enabled = false;
+<<<<<<< HEAD
                 RemoveText();
                 MessageBox.Show("Create order succsess", "Conratugration", MessageBoxButtons.OK);
             }
@@ -402,11 +460,18 @@
                 await _orderService.AddAsync(createOrder);
                 BtAccept.Enabled = false;
                 RemoveText();
+=======
+                RemoveText(); 
+>>>>>>> 458e76291cf53257a3b727b0ee43f5e596007e0d
                 MessageBox.Show("Create order succsess", "Conratugration", MessageBoxButtons.OK);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+<<<<<<< HEAD
+=======
+>>>>>>> bb0f959bed39c1d3a2a56a35d950b89ca9105e9a
+>>>>>>> 458e76291cf53257a3b727b0ee43f5e596007e0d
             }
         }
 
