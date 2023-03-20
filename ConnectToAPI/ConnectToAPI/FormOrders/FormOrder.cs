@@ -89,12 +89,12 @@
                 }
                 if (string.IsNullOrEmpty(TbAddress.Text))
                 {
-                    MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Address is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 if (string.IsNullOrEmpty(TbName.Text))
                 {
-                    MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Name is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 //if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
@@ -114,31 +114,6 @@
                 MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (string.IsNullOrEmpty(TbAddress.Text))
-            {
-                MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (string.IsNullOrEmpty(TbName.Text))
-            {
-                MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            //if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
-            //{
-            //    createCart.Delivery = delivery.Id;
-            //}
-            if (CbbSearch.SelectedItem is GetNameAndPriceProductDto nameAndPriceProductDto)
-            {
-                createCart.NameProduct = nameAndPriceProductDto.Name;
-                createCart.Price = nameAndPriceProductDto.Price;
-                createCart.Quantity = Convert.ToInt32(NUDQuantity.Value);
-                createCart.ProductId = nameAndPriceProductDto.ProductId;
-            }
-            createCart.CustomerName = TbName.Text;
-            createCart.Address = TbAddress.Text;
-            createCart.Phone = TbPhone.Text;
-
             if (createCart.ProductId == Guid.Empty)
             {
                 MessageBox.Show("Choice product", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -153,22 +128,6 @@
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            if (createCart.ProductId == Guid.Empty)
-            {
-                MessageBox.Show("Choice product", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            try
-            {
-                var createAsync = await _cartService.CreateCartAsync(createCart);
-                await Refresh();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
             #region CodeOld
             //bool notFound = false;
             //var listViewItem = new ListViewItem();
@@ -376,22 +335,6 @@
                 OrderDetails = cartDto.Carts
             };
 
-            if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
-            {
-                createOrder.Delivery = delivery.Id;
-            }
-            AllowBtAccept(cartDto.Carts.Count);
-            try
-            {
-                await _orderService.AddAsync(createOrder);
-                BtAccept.Enabled = false;
-                RemoveText();
-                MessageBox.Show("Create order succsess", "Conratugration", MessageBoxButtons.OK);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
             if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
             {
                 createOrder.Delivery = delivery.Id;
