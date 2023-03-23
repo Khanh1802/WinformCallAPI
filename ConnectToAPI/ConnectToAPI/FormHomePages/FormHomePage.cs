@@ -1,4 +1,5 @@
-﻿using ConnectToAPI.FormInventories;
+﻿using ConnectToAPI.FormHistories;
+using ConnectToAPI.FormInventories;
 using ConnectToAPI.FormOrders;
 using ConnectToAPI.FormProducts;
 using ConnectToAPI.FormStatistics;
@@ -42,6 +43,12 @@ namespace ConnectToAPI.FormHomePages
         {
             var pageOrder = Program.ServiceProvider.GetService<FormOrder>();
             pageOrder.ShowDialog();
+        }
+
+        private void BtHistory_Click(object sender, EventArgs e)
+        {
+            var pageHistory = Program.ServiceProvider.GetService<FormHistory>();
+            pageHistory.ShowDialog();
         }
     }
 }

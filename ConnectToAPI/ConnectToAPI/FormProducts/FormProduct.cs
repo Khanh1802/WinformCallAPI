@@ -291,8 +291,8 @@ namespace ConnectToAPI.FormProducts
             Dtg.DataSource = data.Data;
 
             TbCurrentPage.Text = $"{_currentPage}/{Convert.ToString(data.TotalPage)}";
-            BtNextPage.Enabled = data.HasNextPage == true ? true : false;
-            BtReversePage.Enabled = data.HasReversePage == true ? true : false;
+            BtNextPage.Enabled = data.HasNextPage;
+            BtReversePage.Enabled = data.HasReversePage;
             if (Dtg?.Columns != null && Dtg.Columns.Contains("Id"))
             {
                 Dtg.Columns["Id"]!.Visible = false;

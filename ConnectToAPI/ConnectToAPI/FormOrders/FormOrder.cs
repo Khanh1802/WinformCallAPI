@@ -1,4 +1,6 @@
 ﻿using CafeManagement.Application.Contracts.Dtos.CartDto;
+using CafeManagement.Application.Contracts.Dtos.InventoryDtos;
+using CafeManagement.Application.Contracts.Dtos.OrderDetailDtos;
 using CafeManagement.Application.Contracts.Dtos.OrderDtos;
 using CafeManagement.Application.Contracts.Dtos.ProductDtos;
 using CafeManagement.Application.Contracts.Services;
@@ -13,38 +15,53 @@ namespace ConnectToAPI.FormOrders
         private readonly IOrderService _orderService;
         private readonly IMemoryCache _memoryCache;
         private readonly ICartService _cartService;
+        private readonly IInventoryService _inventoryService;
 
         private bool _isLoadingDone = false;
+        private int _currentPage = 1;
         private int _skipCount = 0;
-        public FormOrder(IProductService productService, IMemoryCache memoryCache, ICartService cartService, IOrderService orderService)
+        private int _maxResultCount = 10;
+        public FormOrder(IProductService productService, IMemoryCache memoryCache, ICartService cartService, IOrderService orderService, IInventoryService inventoryService)
         {
             _productService = productService;
             _memoryCache = memoryCache;
             _cartService = cartService;
             _orderService = orderService;
+            _inventoryService = inventoryService;
             InitializeComponent();
             CbbDelivery.DataSource = EnumHelpers.GetEnumList<EnumDelivery>();
             CbbDelivery.DisplayMember = "Name";
+            DTPToDate.Value = DateTime.Now;
         }
         private async void BtFind_Click(object sender, EventArgs e)
+        {
+            await RefreshInventory();
+        }
+
+        private async Task RefreshInventory()
         {
             if (_isLoadingDone)
             {
                 _isLoadingDone = false;
-                var filterProduct = new FilterProductDto()
+                var filterInventoryDto = new FilterInventoryDto()
                 {
-                    PriceMin = 0,
+                    MaxResultCount = 10,
                     SkipCount = _skipCount,
-                    MaxResultCount = 5,
-                    Name = CbbSearch.Text,
-                    Choice = 1
-                };
+                    Choice = 1,
 
-                var data = await _productService.GetListAsync(filterProduct);
-                if (data.Data.Count == 0)
+                };
+                var data = await _inventoryService.GetProductQuantityInventory(filterInventoryDto);
+
+                TbCurrentPage.Text = $"{_currentPage}/{Convert.ToString(data.TotalPage)}";
+                BtNextPage.Enabled = data.HasNextPage;
+                BtReversePage.Enabled = data.HasReversePage;
+
+
+                if (data.Data == null || data.Data.Count == 0)
                 {
                     MessageBox.Show($"Not found {CbbSearch.Text}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     CbbSearch.Text = string.Empty;
+                    _isLoadingDone = true;
                     return;
                 }
                 var andPriceProductDtos = new List<GetNameAndPriceProductDto>();
@@ -52,10 +69,10 @@ namespace ConnectToAPI.FormOrders
                 {
                     var NameAndPrice = new GetNameAndPriceProductDto()
                     {
-                        ProductId = p.Id,
-                        NameAndPrice = p.Name + " - " + p.PriceSell,
-                        Name = p.Name,
-                        Price = p.PriceSell
+                        ProductId = p.ProductId,
+                        NameAndPrice = p.ProductName + " - " + p.Price,
+                        Name = p.ProductName,
+                        Price = p.Price
                     };
                     andPriceProductDtos.Add(NameAndPrice);
                 }
@@ -64,7 +81,6 @@ namespace ConnectToAPI.FormOrders
                 _isLoadingDone = true;
             }
         }
-
         private async void BtAddCart_Click(object sender, EventArgs e)
         {
             if (_isLoadingDone)
@@ -74,16 +90,19 @@ namespace ConnectToAPI.FormOrders
                 if (string.IsNullOrEmpty(TbPhone.Text))
                 {
                     MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoadingDone = true;
                     return;
                 }
                 if (string.IsNullOrEmpty(TbAddress.Text))
                 {
                     MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoadingDone = true;
                     return;
                 }
                 if (string.IsNullOrEmpty(TbName.Text))
                 {
                     MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoadingDone = true;
                     return;
                 }
                 //if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
@@ -97,22 +116,33 @@ namespace ConnectToAPI.FormOrders
                     createCart.Quantity = Convert.ToInt32(NUDQuantity.Value);
                     createCart.ProductId = nameAndPriceProductDto.ProductId;
                 }
-                createCart.CustomerName = TbName.Text;
-                createCart.Address = TbAddress.Text;
-                createCart.Phone = TbPhone.Text;
+
+                try
+                {
+
+                    createCart.CustomerName = TbName.Text;
+                    createCart.Address = TbAddress.Text;
+                    createCart.Phone = TbPhone.Text;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
                 if (createCart.ProductId == Guid.Empty)
                 {
                     MessageBox.Show("Choice product", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoadingDone = true;
                     return;
                 }
                 try
                 {
                     var createAsync = await _cartService.CreateCartAsync(createCart);
-                    await Refresh();
+                    await RefreshListViewCart();
                 }
                 catch (Exception ex)
                 {
+                    _isLoadingDone = true;
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
@@ -177,21 +207,13 @@ namespace ConnectToAPI.FormOrders
                 //    });
                 //} 
                 #endregion
-                _isLoadingDone = true;
             }
         }
 
         private async void FormOrder_Load(object sender, EventArgs e)
         {
-            listView1.View = View.Details;
-            // Add a column with width 20 and left alignment.
-            listView1.Columns.Add("Id", 200, HorizontalAlignment.Left);
-            listView1.Columns.Add("Name", 200, HorizontalAlignment.Left);
-            listView1.Columns.Add("Quantity", 200, HorizontalAlignment.Left);
-            listView1.Columns.Add("Price", 200, HorizontalAlignment.Left);
-            listView1.Columns.Add("Total price", 200, HorizontalAlignment.Left);
-            listView1.FullRowSelect = true;
-            BtAccept.Enabled = false;
+            AddColumnListViewCart();
+            AddColumnListViewOrderDetail();
             #region MyRegion
             //_memoryCache.TryGetValue<ListView>(OrderCacheKey.OrderKey, out var result);
             //if (result != null)
@@ -206,15 +228,28 @@ namespace ConnectToAPI.FormOrders
             //    }
             //}
             #endregion
-            await Refresh();
+            await RefreshListViewCart();
         }
 
-        private async Task Refresh()
+        private void AddColumnListViewCart()
+        {
+            listViewCart.View = View.Details;
+            // Add a column with width 20 and left alignment.
+            listViewCart.Columns.Add("Id", 100, HorizontalAlignment.Left);
+            listViewCart.Columns.Add("Name", 150, HorizontalAlignment.Left);
+            listViewCart.Columns.Add("Quantity", 50, HorizontalAlignment.Left);
+            listViewCart.Columns.Add("Price", 150, HorizontalAlignment.Left);
+            listViewCart.Columns.Add("Total price", 200, HorizontalAlignment.Left);
+            listViewCart.FullRowSelect = true;
+            BtAccept.Enabled = false;
+        }
+
+        private async Task RefreshListViewCart()
         {
             var totalBill = 0M;
-            foreach (ListViewItem item in listView1.Items)
+            foreach (ListViewItem item in listViewCart.Items)
             {
-                listView1.Items.Remove(item);
+                listViewCart.Items.Remove(item);
             }
 
             if (!string.IsNullOrEmpty(TbPhone.Text))
@@ -228,7 +263,7 @@ namespace ConnectToAPI.FormOrders
                         string[] row = {getCart.Carts[i].ProductId.ToString(), getCart.Carts[i].ProductName, getCart.Carts[i].Quantity.ToString()
                             , getCart.Carts[i].Price.ToString(), getCart.Carts[i].TotalPrice.ToString()};
                         var listItem = new ListViewItem(row);
-                        listView1.Items.Add(listItem);
+                        listViewCart.Items.Add(listItem);
                     }
                 }
                 AllowBtAccept(getCart.Carts.Count);
@@ -242,6 +277,7 @@ namespace ConnectToAPI.FormOrders
         {
             if (_isLoadingDone)
             {
+                _isLoadingDone = false;
                 #region CodeOld
                 //if (listView1.SelectedItems.Count == 0)
                 //{
@@ -262,11 +298,11 @@ namespace ConnectToAPI.FormOrders
                 //}
                 //listView1.Items.Remove(listView1.SelectedItems[0]);
                 #endregion
-                for (int i = 0; i < listView1.Items.Count; i++)
+                for (int i = 0; i < listViewCart.Items.Count; i++)
                 {
-                    if (listView1.Items[i].Selected)
+                    if (listViewCart.Items[i].Selected)
                     {
-                        ListViewItem item = listView1.SelectedItems[0];
+                        ListViewItem item = listViewCart.SelectedItems[0];
                         var guid = Guid.Parse(item.SubItems[0].Text);
                         var delete = new UpdateCartDto()
                         {
@@ -277,15 +313,15 @@ namespace ConnectToAPI.FormOrders
                         {
                             await _cartService.UpdateAsync(delete);
                             MessageBox.Show("Remove success");
-                            await Refresh();
+                            await RefreshListViewCart();
                         }
                         catch (Exception ex)
                         {
+                            _isLoadingDone = true;
                             MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
-
                 _isLoadingDone = true;
             }
 
@@ -293,11 +329,11 @@ namespace ConnectToAPI.FormOrders
 
         private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0)
+            if (listViewCart.SelectedItems.Count == 0)
             {
                 return;
             }
-            ListViewItem item = listView1.SelectedItems[0];
+            ListViewItem item = listViewCart.SelectedItems[0];
             //fill the text boxes
             var name = item.SubItems[1].Text;
             var quantity = item.SubItems[2].Text;
@@ -310,9 +346,10 @@ namespace ConnectToAPI.FormOrders
         {
             if (_isLoadingDone)
             {
-
+                _isLoadingDone = false;
                 if (string.IsNullOrEmpty(TbPhone.Text))
                 {
+                    _isLoadingDone = true;
                     return;
                 }
                 var cartDto = await _cartService.GetCartAsync(TbPhone.Text);
@@ -335,9 +372,11 @@ namespace ConnectToAPI.FormOrders
                     BtAccept.Enabled = false;
                     RemoveText();
                     MessageBox.Show("Create order succsess", "Conratugration", MessageBoxButtons.OK);
+                    _isLoadingDone = true;
                 }
                 catch (Exception ex)
                 {
+                    _isLoadingDone = true;
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -354,7 +393,7 @@ namespace ConnectToAPI.FormOrders
             TbAddress.Text = string.Empty;
             TbName.Text = string.Empty;
             TbTotalBill.Text = string.Empty;
-            listView1.Items.Clear();
+            listViewCart.Items.Clear();
         }
 
         private void AllowBtAccept(int count)
@@ -367,6 +406,138 @@ namespace ConnectToAPI.FormOrders
             {
                 BtAccept.Enabled = false;
             }
+        }
+
+        private async void BtReversePage_Click(object sender, EventArgs e)
+        {
+            if (_isLoadingDone)
+            {
+                _currentPage--;
+                _skipCount -= 10;
+                await RefreshInventory();
+            }
+        }
+
+        private async void BtNextPage_Click(object sender, EventArgs e)
+        {
+            if (_isLoadingDone)
+            {
+                _currentPage++;
+                _skipCount += 10;
+                await RefreshInventory();
+            }
+        }
+        private async Task RefreshDataGirdView()
+        {
+            _isLoadingDone = false;
+            var filter = new FilterOrderDetailDto()
+            {
+                FromDate = DTPFormDate.Value,
+                ToDate = DTPToDate.Value,
+                SkipCount = _skipCount,
+                MaxResultCount = _maxResultCount
+            };
+            var data = await _orderService.GetAsync(filter);
+            Dtg.DataSource = data.Data;
+            TbPageBill.Text = $"{_currentPage}/{Convert.ToString(data.TotalPage)}";
+            BtNextPageBill.Enabled = data.HasNextPage;
+            BtReversePageBill.Enabled = data.HasReversePage;
+            if (Dtg?.Columns != null && Dtg.Columns.Contains("Id"))
+            {
+                Dtg.Columns["Id"]!.Visible = false;
+            }
+
+            if (Dtg?.Columns != null && Dtg.Columns.Contains("IsDeleted"))
+            {
+                Dtg.Columns["IsDeleted"]!.Visible = false;
+            }
+
+            if (Dtg?.Columns != null && Dtg.Columns.Contains("DeletetionTime"))
+            {
+                Dtg.Columns["DeletetionTime"]!.Visible = false;
+            }
+
+            if (Dtg?.Columns != null && Dtg.Columns.Contains("LastModificationTime"))
+            {
+                Dtg.Columns["LastModificationTime"]!.Visible = false;
+            }
+            _isLoadingDone = true;
+        }
+
+        private async void FindOrder_Click(object sender, EventArgs e)
+        {
+            await RefreshDataGirdView();
+        }
+
+        private async void ReversePageBill_Click(object sender, EventArgs e)
+        {
+            if (_isLoadingDone)
+            {
+                _isLoadingDone = false;
+                _currentPage--;
+                _skipCount -= 10;
+                await RefreshDataGirdView();
+            }
+        }
+
+        private async void NextPageBill_Click(object sender, EventArgs e)
+        {
+            if (_isLoadingDone)
+            {
+                _isLoadingDone = false;
+                _currentPage++;
+                _skipCount += 10;
+                await RefreshDataGirdView();
+            }
+        }
+
+        private async void BtFindOrderId_Click(object sender, EventArgs e)
+        {
+            var convertGuid = Guid.TryParse(TbFindOrderID.Text, out Guid result);
+            if (convertGuid)
+            {
+                var getDetailDtos = await _orderService.GetByIdAsync(result);
+                await RefreshListViewOrderDetail(getDetailDtos);
+            }
+            else
+            {
+                MessageBox.Show("Wrong type", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AddColumnListViewOrderDetail()
+        {
+            listViewOrderDetail.View = View.Details;
+            // Add a column with width 20 and left alignment.
+            listViewOrderDetail.Columns.Add("Id", 100, HorizontalAlignment.Left);
+            listViewOrderDetail.Columns.Add("Name", 150, HorizontalAlignment.Left);
+            listViewOrderDetail.Columns.Add("Quantity", 50, HorizontalAlignment.Left);
+            listViewOrderDetail.Columns.Add("Price", 150, HorizontalAlignment.Left);
+            listViewOrderDetail.Columns.Add("Total price", 200, HorizontalAlignment.Left);
+            listViewOrderDetail.Columns.Add("Create Time", 200, HorizontalAlignment.Left);
+            listViewOrderDetail.FullRowSelect = true;
+            BtAccept.Enabled = false;
+        }
+        private async Task RefreshListViewOrderDetail(List<OrderDetailDto> items)
+        {
+            var totalBill = 0M;
+            foreach (ListViewItem item in listViewOrderDetail.Items)
+            {
+                listViewOrderDetail.Items.Remove(item);
+            }
+
+            if (items.Count > 0)
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    string[] row = {items[i].OrderId.ToString(), items[i].ProductName, items[i].Quantity.ToString()
+                            , items[i].Price.ToString(), items[i].TotalPrice.ToString(),items[i].CreateTime.ToString()};
+                    var listItem = new ListViewItem(row);
+                    listViewOrderDetail.Items.Add(listItem);
+                }
+            }
+
+            _isLoadingDone = true;
         }
     }
 }

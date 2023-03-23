@@ -4,6 +4,8 @@ using CafeManagement.Application.Contracts.Services;
 using CafeManagement.Shared.Options;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
+using CafeManagement.Application.Contracts.Dtos.OrderDetailDtos;
+using CafeManagement.Shared.Helper;
 
 namespace CafeManagement.Applications.Services
 {
@@ -34,15 +36,33 @@ namespace CafeManagement.Applications.Services
             }
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task<CommonPageDto<OrderDto>> GetAsync(FilterOrderDetailDto item)
         {
+            var get = await _httpClient.PostAsJsonAsync($"{_optionsOrder.GetOrder}", item);
+            var response = await get.Content.ReadFromJsonAsync<GenericResponse<CommonPageDto<OrderDto>>>();
             try
             {
-                await _httpClient.DeleteAsync($"{_optionsOrder.DeleteOrder}");
+                get.EnsureSuccessStatusCode();
+                return response.Data;
             }
-            catch (Exception ex)
+            catch
             {
-                throw new Exception(ex.Message);
+                throw new Exception(response.Message);
+            }
+        }
+
+        public async Task<List<OrderDetailDto>> GetByIdAsync(Guid id)
+        {
+            var get = await _httpClient.GetAsync($"{_optionsOrder.GetById}/{id}" );
+            var response = await get.Content.ReadFromJsonAsync<GenericResponse<List<OrderDetailDto>>>();
+            try
+            {
+                get.EnsureSuccessStatusCode();
+                return response.Data;
+            }
+            catch
+            {
+                throw new Exception(response.Message);
             }
         }
     }

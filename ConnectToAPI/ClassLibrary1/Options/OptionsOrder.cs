@@ -3,6 +3,7 @@
     public class OptionsOrder
     {
         public string CreateOrder { get; set; }
-        public string DeleteOrder { get; set; }
+        public string GetOrder { get; set; }
+        public string GetById { get; set; }
     }
 }

@@ -1,9 +1,10 @@
-﻿using CafeManagement.Application.Contracts.Dtos.InventoryTransactionDtos;
+﻿using CafeManagement.Application.Contracts.Dtos.Generics;
+using CafeManagement.Application.Contracts.Dtos.InventoryTransactionDtos;
 using CafeManagement.Application.Contracts.Services;
+using CafeManagement.Shared.Helper;
 using CafeManagement.Shared.Options;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
-using CafeManagement.Application.Contracts.Dtos.Generics;
 
 namespace CafeManagement.Applications.Services
 {
@@ -36,20 +37,18 @@ namespace CafeManagement.Applications.Services
             }
         }
 
-        public async Task<List<InventoryTransactionDto>> GetListAsync(FilterInventoryTransactionDto item)
+        public async Task<CommonPageDto<InventoryTransactionDto>> GetListAsync(FilterInventoryTransactionDto item)
         {
+            var getAll = await _httpClient.PostAsJsonAsync($"{_options.GetInventoryHistory}", item);
+            var result = await getAll.Content.ReadFromJsonAsync<GenericResponse<CommonPageDto<InventoryTransactionDto>>>();
             try
             {
-                var getAll = await _httpClient.PostAsJsonAsync($"{_options.GetInventoryStatistics}", item);
-                if (getAll.IsSuccessStatusCode)
-                {
-                    return (await getAll.Content.ReadFromJsonAsync<GenericResponse<List<InventoryTransactionDto>>>()).Data;
-                }
-                return new List<InventoryTransactionDto>();
+                getAll.EnsureSuccessStatusCode();
+                return result.Data;
             }
-            catch (Exception ex)
+            catch
             {
-                throw new Exception(ex.Message);
+                throw new Exception(result.Message);
             }
         }
     }

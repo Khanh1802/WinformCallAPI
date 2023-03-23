@@ -73,11 +73,11 @@ namespace ConnectToAPI.FormStatistics
             };
             if (CbbFilter.SelectedItem is CommonEnumDto<EnumInventoryTransactionFilter> choice)
             {
-                filter.Choice = Convert.ToInt32(choice.Id);
+                filter.Choice = choice.Id;
             }
             if (CbbType.SelectedItem is CommonEnumDto<EnumInventoryTransationType> type)
             {
-                filter.Type = Convert.ToInt32(type.Id);
+                filter.Type = type.Id;
             }
             var inventoryTransactions = await _inventoryTransactionService.GetListAsync(filter);
             Dtg.DataSource = inventoryTransactions;
@@ -120,11 +120,11 @@ namespace ConnectToAPI.FormStatistics
                 }
                 if (CbbType.SelectedItem is CommonEnumDto<EnumInventoryTransationType> type)
                 {
-                    filter.Type = Convert.ToInt32(type.Id);
+                    filter.Type = type.Id;
                 }
                 if (CbbFilter.SelectedItem is CommonEnumDto<EnumInventoryTransactionFilter> choice)
                 {
-                    filter.Choice = Convert.ToInt32(choice.Id);
+                    filter.Choice = choice.Id;
                 }
                 if (!string.IsNullOrEmpty(TbId.Text))
                 {
@@ -176,9 +176,9 @@ namespace ConnectToAPI.FormStatistics
                 MaxResultCount = _takeCount,
                 SkipCount = _skipCount,
             };
-            if (CbbType.SelectedItem is CommonEnumDto<EnumInventoryTransationType> transation)
+            if (CbbType.SelectedItem is CommonEnumDto<EnumInventoryTransationType> type)
             {
-                filter.Type = Convert.ToInt32(transation.Id);
+                filter.Type = type.Id;
             }
             var inventoryTransactions = await _inventoryTransactionService.GetListAsync(filter);
             Dtg.DataSource = inventoryTransactions;

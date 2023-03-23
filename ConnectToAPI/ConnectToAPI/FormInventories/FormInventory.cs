@@ -314,14 +314,14 @@ namespace ConnectToAPI.FormInventories
                 MessageBox.Show("Product or Warehouse is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            var quatity = Convert.ToInt32(TbQuatity.Text);
+            var quantity = Convert.ToInt32(TbQuatity.Text);
             if (_InventoryId.HasValue && CbbProduct.SelectedValue is ProductDto && CbbWareHouse.SelectedValue is WarehouseDto
                 && _InventoryId.HasValue)
             {
                 var updateInventory = new UpdateInventoryDto()
                 {
                     Id = _InventoryId,
-                    Quatity = quatity,
+                    Quatity = quantity,
                 };
                 try
                 {

@@ -15,5 +15,6 @@ namespace CafeManagement.Application.Contracts.Dtos.InventoryDtos
         public int? Quatity { get; set; }
         public DateTime? CreateTime { get; set; }
         public DateTime? LastModificationTime { get; set; }
+        public decimal Price { get; set; }
     }
 }

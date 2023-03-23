@@ -1,10 +1,10 @@
-﻿using CafeManagement.Application.Contracts.Dtos.InventoryDtos;
+﻿using CafeManagement.Application.Contracts.Dtos.Generics;
+using CafeManagement.Application.Contracts.Dtos.InventoryDtos;
 using CafeManagement.Application.Contracts.Services;
 using CafeManagement.Shared.Helper;
 using CafeManagement.Shared.Options;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
-using CafeManagement.Application.Contracts.Dtos.Generics;
 
 namespace CafeManagement.Applications.Services
 {
@@ -21,15 +21,16 @@ namespace CafeManagement.Applications.Services
 
         public async Task<InventoryDto> AddAsync(CreateInventoryDto item)
         {
+            var create = await _httpClient.PostAsJsonAsync($"{_optionsInventories.CreateInventory}", item);
+            var result = await create.Content.ReadFromJsonAsync<GenericResponse<InventoryDto>>();
             try
             {
-                var create = await _httpClient.PostAsJsonAsync($"{_optionsInventories.CreateInventory}", item);
                 create.EnsureSuccessStatusCode();
-                return (await create.Content.ReadFromJsonAsync<GenericResponse<InventoryDto>>()).Data;
+                return result.Data;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception(result.Message);
             }
         }
 
@@ -82,6 +83,18 @@ namespace CafeManagement.Applications.Services
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+        public async Task<CommonPageDto<InventoryDto>> GetProductQuantityInventory(FilterInventoryDto filter)
+        {
+            var getAll = await _httpClient.PostAsJsonAsync($"{_optionsInventories.GetProductQuantityInventory}", filter);
+            if (getAll.IsSuccessStatusCode)
+            {
+                return (await getAll.Content.ReadFromJsonAsync<GenericResponse<CommonPageDto<InventoryDto>>>())?.Data ?? new CommonPageDto<InventoryDto>();
+            }
+            else
+            {
+                return new CommonPageDto<InventoryDto>();
             }
         }
     }
