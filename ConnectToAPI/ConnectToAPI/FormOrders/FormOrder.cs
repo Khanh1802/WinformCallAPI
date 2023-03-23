@@ -1,6 +1,9 @@
 ﻿using CafeManagement.Application.Contracts.Dtos.CartDto;
 using CafeManagement.Application.Contracts.Dtos.InventoryDtos;
+<<<<<<< HEAD
 using CafeManagement.Application.Contracts.Dtos.OrderDetailDtos;
+=======
+>>>>>>> fa404197f3b308806d068fa3826a8da4743f068d
 using CafeManagement.Application.Contracts.Dtos.OrderDtos;
 using CafeManagement.Application.Contracts.Dtos.ProductDtos;
 using CafeManagement.Application.Contracts.Services;
@@ -20,7 +23,10 @@ namespace ConnectToAPI.FormOrders
         private bool _isLoadingDone = false;
         private int _currentPage = 1;
         private int _skipCount = 0;
+<<<<<<< HEAD
         private int _maxResultCount = 10;
+=======
+>>>>>>> fa404197f3b308806d068fa3826a8da4743f068d
         public FormOrder(IProductService productService, IMemoryCache memoryCache, ICartService cartService, IOrderService orderService, IInventoryService inventoryService)
         {
             _productService = productService;
@@ -48,6 +54,7 @@ namespace ConnectToAPI.FormOrders
                     MaxResultCount = 10,
                     SkipCount = _skipCount,
                     Choice = 1,
+<<<<<<< HEAD
 
                 };
                 var data = await _inventoryService.GetProductQuantityInventory(filterInventoryDto);
@@ -56,6 +63,16 @@ namespace ConnectToAPI.FormOrders
                 BtNextPage.Enabled = data.HasNextPage;
                 BtReversePage.Enabled = data.HasReversePage;
 
+=======
+                    
+                };
+                var data = await _inventoryService.GetProductQuantityInventory(filterInventoryDto);
+
+                TbCurrentPage.Text = $"{_currentPage}/{Convert.ToString(data.TotalPage)}";
+                BtNextPage.Enabled = data.HasNextPage;
+                BtReversePage.Enabled = data.HasReversePage;
+                
+>>>>>>> fa404197f3b308806d068fa3826a8da4743f068d
 
                 if (data.Data == null || data.Data.Count == 0)
                 {
@@ -72,7 +89,11 @@ namespace ConnectToAPI.FormOrders
                         ProductId = p.ProductId,
                         NameAndPrice = p.ProductName + " - " + p.Price,
                         Name = p.ProductName,
+<<<<<<< HEAD
                         Price = p.Price
+=======
+                        Price = p.Price 
+>>>>>>> fa404197f3b308806d068fa3826a8da4743f068d
                     };
                     andPriceProductDtos.Add(NameAndPrice);
                 }
@@ -427,6 +448,7 @@ namespace ConnectToAPI.FormOrders
                 await RefreshInventory();
             }
         }
+<<<<<<< HEAD
         private async Task RefreshDataGirdView()
         {
             _isLoadingDone = false;
@@ -538,6 +560,30 @@ namespace ConnectToAPI.FormOrders
             }
 
             _isLoadingDone = true;
+=======
+
+        private async void Tab_Click(object sender, EventArgs e)
+        {
+
+        }
+        private async Task RefreshDataGirdView()
+        {
+            //_isLoadingDone = false;
+            //FilterProductDto filterProduct = new FilterProductDto()
+            //{
+            //    PriceMin = NumericPriceMin.Value,
+            //    Pricemax = NumericPriceMax.Value,
+            //    SkipCount = _skipCount,
+            //    MaxResultCount = _takeMaxResultCount
+            //};
+
+            //if (CbbFilterPrice_Date.SelectedItem is CommonEnumDto<EnumProductFilter> filter)
+            //{
+            //    filterProduct.Choice = Convert.ToInt32(filter.Id);
+            //}
+            //await DataPageList(filterProduct);
+            //RefesheButton();
+>>>>>>> fa404197f3b308806d068fa3826a8da4743f068d
         }
     }
 }
