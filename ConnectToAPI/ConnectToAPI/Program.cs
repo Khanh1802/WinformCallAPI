@@ -2,6 +2,7 @@ using CafeManagement.Application.Contracts.Services;
 using CafeManagement.Applications.Services;
 using CafeManagement.Shared.Options;
 using ConnectToAPI.Deletegate;
+using ConnectToAPI.FormHistories;
 using ConnectToAPI.FormHomePages;
 using ConnectToAPI.FormInventories;
 using ConnectToAPI.FormLogins;
@@ -53,6 +54,7 @@ namespace ConnectToAPI
               services.AddTransient<FormAddInventory>();
               services.AddTransient<FormStatistic>();
               services.AddTransient<FormOrder>();
+              services.AddTransient<FormHistory>();
               services.AddTransient<IProductService, ProductService>();
               services.AddTransient<IUserService, UserService>();
               services.AddTransient<IWarehouseService, WarehouseService>();

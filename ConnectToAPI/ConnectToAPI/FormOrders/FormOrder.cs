@@ -1,4 +1,5 @@
 ﻿using CafeManagement.Application.Contracts.Dtos.CartDto;
+using CafeManagement.Application.Contracts.Dtos.InventoryDtos;
 using CafeManagement.Application.Contracts.Dtos.OrderDtos;
 using CafeManagement.Application.Contracts.Dtos.ProductDtos;
 using CafeManagement.Application.Contracts.Services;
@@ -13,38 +14,51 @@ namespace ConnectToAPI.FormOrders
         private readonly IOrderService _orderService;
         private readonly IMemoryCache _memoryCache;
         private readonly ICartService _cartService;
+        private readonly IInventoryService _inventoryService;
 
         private bool _isLoadingDone = false;
+        private int _currentPage = 1;
         private int _skipCount = 0;
-        public FormOrder(IProductService productService, IMemoryCache memoryCache, ICartService cartService, IOrderService orderService)
+        public FormOrder(IProductService productService, IMemoryCache memoryCache, ICartService cartService, IOrderService orderService, IInventoryService inventoryService)
         {
             _productService = productService;
             _memoryCache = memoryCache;
             _cartService = cartService;
             _orderService = orderService;
+            _inventoryService = inventoryService;
             InitializeComponent();
             CbbDelivery.DataSource = EnumHelpers.GetEnumList<EnumDelivery>();
             CbbDelivery.DisplayMember = "Name";
         }
         private async void BtFind_Click(object sender, EventArgs e)
         {
+            await RefreshInventory();
+        }
+
+        private async Task RefreshInventory()
+        {
             if (_isLoadingDone)
             {
                 _isLoadingDone = false;
-                var filterProduct = new FilterProductDto()
+                var filterInventoryDto = new FilterInventoryDto()
                 {
-                    PriceMin = 0,
+                    MaxResultCount = 10,
                     SkipCount = _skipCount,
-                    MaxResultCount = 5,
-                    Name = CbbSearch.Text,
-                    Choice = 1
+                    Choice = 1,
+                    
                 };
+                var data = await _inventoryService.GetProductQuantityInventory(filterInventoryDto);
 
-                var data = await _productService.GetListAsync(filterProduct);
-                if (data.Data.Count == 0)
+                TbCurrentPage.Text = $"{_currentPage}/{Convert.ToString(data.TotalPage)}";
+                BtNextPage.Enabled = data.HasNextPage;
+                BtReversePage.Enabled = data.HasReversePage;
+                
+
+                if (data.Data == null || data.Data.Count == 0)
                 {
                     MessageBox.Show($"Not found {CbbSearch.Text}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     CbbSearch.Text = string.Empty;
+                    _isLoadingDone = true;
                     return;
                 }
                 var andPriceProductDtos = new List<GetNameAndPriceProductDto>();
@@ -52,10 +66,10 @@ namespace ConnectToAPI.FormOrders
                 {
                     var NameAndPrice = new GetNameAndPriceProductDto()
                     {
-                        ProductId = p.Id,
-                        NameAndPrice = p.Name + " - " + p.PriceSell,
-                        Name = p.Name,
-                        Price = p.PriceSell
+                        ProductId = p.ProductId,
+                        NameAndPrice = p.ProductName + " - " + p.Price,
+                        Name = p.ProductName,
+                        Price = p.Price 
                     };
                     andPriceProductDtos.Add(NameAndPrice);
                 }
@@ -64,7 +78,6 @@ namespace ConnectToAPI.FormOrders
                 _isLoadingDone = true;
             }
         }
-
         private async void BtAddCart_Click(object sender, EventArgs e)
         {
             if (_isLoadingDone)
@@ -74,16 +87,19 @@ namespace ConnectToAPI.FormOrders
                 if (string.IsNullOrEmpty(TbPhone.Text))
                 {
                     MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoadingDone = true;
                     return;
                 }
                 if (string.IsNullOrEmpty(TbAddress.Text))
                 {
                     MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoadingDone = true;
                     return;
                 }
                 if (string.IsNullOrEmpty(TbName.Text))
                 {
                     MessageBox.Show("Phone is empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoadingDone = true;
                     return;
                 }
                 //if (CbbDelivery.SelectedItem is CommonEnumDto<EnumDelivery> delivery)
@@ -104,6 +120,7 @@ namespace ConnectToAPI.FormOrders
                 if (createCart.ProductId == Guid.Empty)
                 {
                     MessageBox.Show("Choice product", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoadingDone = true;
                     return;
                 }
                 try
@@ -113,6 +130,7 @@ namespace ConnectToAPI.FormOrders
                 }
                 catch (Exception ex)
                 {
+                    _isLoadingDone = true;
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
@@ -177,7 +195,6 @@ namespace ConnectToAPI.FormOrders
                 //    });
                 //} 
                 #endregion
-                _isLoadingDone = true;
             }
         }
 
@@ -242,6 +259,7 @@ namespace ConnectToAPI.FormOrders
         {
             if (_isLoadingDone)
             {
+                _isLoadingDone = false;
                 #region CodeOld
                 //if (listView1.SelectedItems.Count == 0)
                 //{
@@ -281,11 +299,11 @@ namespace ConnectToAPI.FormOrders
                         }
                         catch (Exception ex)
                         {
+                            _isLoadingDone = true;
                             MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
-
                 _isLoadingDone = true;
             }
 
@@ -310,9 +328,10 @@ namespace ConnectToAPI.FormOrders
         {
             if (_isLoadingDone)
             {
-
+                _isLoadingDone = false;
                 if (string.IsNullOrEmpty(TbPhone.Text))
                 {
+                    _isLoadingDone = true;
                     return;
                 }
                 var cartDto = await _cartService.GetCartAsync(TbPhone.Text);
@@ -335,9 +354,11 @@ namespace ConnectToAPI.FormOrders
                     BtAccept.Enabled = false;
                     RemoveText();
                     MessageBox.Show("Create order succsess", "Conratugration", MessageBoxButtons.OK);
+                    _isLoadingDone = true;
                 }
                 catch (Exception ex)
                 {
+                    _isLoadingDone = true;
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -367,6 +388,49 @@ namespace ConnectToAPI.FormOrders
             {
                 BtAccept.Enabled = false;
             }
+        }
+
+        private async void BtReversePage_Click(object sender, EventArgs e)
+        {
+            if (_isLoadingDone)
+            {
+                _currentPage--;
+                _skipCount -= 10;
+                await RefreshInventory();
+            }
+        }
+
+        private async void BtNextPage_Click(object sender, EventArgs e)
+        {
+            if (_isLoadingDone)
+            {
+                _currentPage++;
+                _skipCount += 10;
+                await RefreshInventory();
+            }
+        }
+
+        private async void Tab_Click(object sender, EventArgs e)
+        {
+
+        }
+        private async Task RefreshDataGirdView()
+        {
+            //_isLoadingDone = false;
+            //FilterProductDto filterProduct = new FilterProductDto()
+            //{
+            //    PriceMin = NumericPriceMin.Value,
+            //    Pricemax = NumericPriceMax.Value,
+            //    SkipCount = _skipCount,
+            //    MaxResultCount = _takeMaxResultCount
+            //};
+
+            //if (CbbFilterPrice_Date.SelectedItem is CommonEnumDto<EnumProductFilter> filter)
+            //{
+            //    filterProduct.Choice = Convert.ToInt32(filter.Id);
+            //}
+            //await DataPageList(filterProduct);
+            //RefesheButton();
         }
     }
 }

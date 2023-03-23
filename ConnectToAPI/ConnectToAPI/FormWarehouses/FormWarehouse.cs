@@ -11,6 +11,7 @@ namespace ConnectToAPI.FormWarehouses
     {
         private readonly IWarehouseService _warehouseService;
         private readonly OptionsWarehouses _optionsWarehouses;
+        private int _currentPage = 1;
         private int _skipCount = 0;
         private int _takeMaxResultCount = 10;
         private bool _isLoadingDone = false;
@@ -148,8 +149,11 @@ namespace ConnectToAPI.FormWarehouses
                 try
                 {
                     _isLoadingDone = false;
-                    var find = await _warehouseService.GetListAsync(filter);
-                    Dtg.DataSource = find;
+                    var data = (await _warehouseService.GetListAsync(filter));
+                    Dtg.DataSource = data.Data;
+                    TbCurrentPage.Text = $"{_currentPage}/{Convert.ToString(data.TotalPage)}";
+                    BtNextPage.Enabled = data.HasNextPage == true ? true : false;
+                    BtReversePage.Enabled = data.HasReversePage == true ? true : false;
                     _isLoadingDone = true;
                 }
                 catch (Exception ex)
@@ -177,11 +181,15 @@ namespace ConnectToAPI.FormWarehouses
                     SkipCount = _skipCount,
                     MaxResultCount = _takeMaxResultCount
                 };
-                Dtg.DataSource = await _warehouseService.GetListAsync(filter);
+                var data = (await _warehouseService.GetListAsync(filter));
+                Dtg.DataSource =data.Data;
                 if (Dtg?.Columns != null && Dtg.Columns.Contains("Id"))
                 {
                     Dtg.Columns["Id"]!.Visible = false;
                 }
+                TbCurrentPage.Text = $"{_currentPage}/{Convert.ToString(data.TotalPage)}";
+                BtNextPage.Enabled = data.HasNextPage == true ? true : false;
+                BtReversePage.Enabled = data.HasReversePage == true ? true : false;
                 BtAdd.Enabled = true;
                 BtRemove.Enabled = false;
                 BtUpdate.Enabled = false;
@@ -213,7 +221,7 @@ namespace ConnectToAPI.FormWarehouses
             if (_isLoadingDone)
             {
                 _isLoadingDone = false;
-                //_currentPage++;
+                _currentPage++;
                 if (FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
                 {
                     _skipCount += Convert.ToInt32(indexPage.Name);
@@ -227,7 +235,7 @@ namespace ConnectToAPI.FormWarehouses
             if (_isLoadingDone)
             {
                 _isLoadingDone = false;
-                //_currentPage--;
+                _currentPage--;
                 if (FormWarehousePage.SelectedItem is CommonEnumDto<EnumIndexPage> indexPage)
                 {
                     _skipCount -= Convert.ToInt32(indexPage.Name);
@@ -249,7 +257,7 @@ namespace ConnectToAPI.FormWarehouses
             if (_isLoadingDone && CbAllResult.Checked)
             {
                 _skipCount = 0;
-                //_currentPage = 1;
+                _currentPage = 1;
                 await RefreshDataGirdView();
             }
         }

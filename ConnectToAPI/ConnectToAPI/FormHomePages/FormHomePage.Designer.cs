@@ -116,6 +116,7 @@
             this.BtHistory.TabIndex = 98;
             this.BtHistory.Text = "History";
             this.BtHistory.UseVisualStyleBackColor = true;
+            this.BtHistory.Click += new System.EventHandler(this.BtHistory_Click);
             // 
             // BtStatistic
             // 
